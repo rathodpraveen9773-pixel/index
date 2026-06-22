@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Animal Welfare NGO Directory – Mumbai, Navi Mumbai & Thane | Furever Meals</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --ivory:#faf8f3;--warm-white:#fffdf8;--yellow:#f5c842;--yellow-dark:#d4a820;
+    --yellow-light:#fdf3c0;--yellow-pale:#fffae8;--black:#1a1a1a;--dark:#2c2c2c;
+    --mid:#555;--muted:#888;--border:#e8e2d4;--border-dark:#d0c8b4;
+    --card-bg:#fff;--orange:#e07830;--orange-light:#fde8d0;--red:#c0392b;
+    --shadow:0 4px 20px rgba(0,0,0,0.09);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Nunito',sans-serif;background:var(--ivory);color:var(--black);min-height:100vh;}
+
+  /* HERO */
+  .hero{background:var(--black);padding:52px 24px 44px;text-align:center;position:relative;overflow:hidden;}
+  .hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:var(--yellow);}
+  .hero-logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:20px;}
+  .logo-text{font-family:'Playfair Display',serif;font-size:18px;color:var(--yellow);font-weight:600;letter-spacing:.04em;}
+  .logo-div{width:1px;height:20px;background:rgba(255,255,255,.18);}
+  .logo-sub{font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.09em;text-transform:uppercase;}
+  .hero-tag{display:inline-block;background:var(--yellow);color:var(--black);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:4px 14px;border-radius:20px;margin-bottom:16px;}
+  .hero h1{font-family:'Playfair Display',serif;font-size:clamp(26px,4.5vw,44px);font-weight:700;color:#fff;line-height:1.2;margin-bottom:10px;}
+  .hero h1 span{color:var(--yellow);font-style:italic;}
+  .hero-desc{color:rgba(255,255,255,.5);font-size:14px;max-width:460px;margin:0 auto 28px;line-height:1.65;font-weight:300;}
+  .hero-stats{display:flex;justify-content:center;border:1px solid rgba(255,255,255,.12);border-radius:12px;max-width:440px;margin:0 auto;overflow:hidden;}
+  .stat{flex:1;min-width:90px;padding:14px 10px;border-right:1px solid rgba(255,255,255,.1);text-align:center;}
+  .stat:last-child{border-right:none;}
+  .stat-n{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--yellow);display:block;}
+  .stat-l{font-size:10px;color:rgba(255,255,255,.38);letter-spacing:.07em;text-transform:uppercase;margin-top:2px;display:block;}
+
+  /* EMERGENCY STRIP */
+  .estrip{background:var(--red);padding:13px 20px;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;}
+  .elabel{font-size:12px;font-weight:700;color:#fff;letter-spacing:.07em;text-transform:uppercase;}
+  .enums{display:flex;gap:10px;flex-wrap:wrap;}
+  .enum{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.22);border-radius:6px;padding:5px 12px;text-align:center;}
+  .enum .n{color:#fff;font-weight:700;font-size:13px;display:block;}
+  .enum .l{color:rgba(255,255,255,.55);font-size:10px;display:block;letter-spacing:.04em;}
+
+  /* CONTROLS */
+  .controls{background:var(--warm-white);border-bottom:2px solid var(--yellow);padding:14px 20px;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.08);}
+  .ctrl-inner{max-width:1140px;margin:0 auto;display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  .swrap{flex:1;min-width:200px;position:relative;}
+  .sico{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:13px;pointer-events:none;}
+  .swrap input{width:100%;padding:9px 12px 9px 34px;border:1.5px solid var(--border-dark);border-radius:8px;font-family:'Nunito',sans-serif;font-size:14px;background:var(--card-bg);color:var(--black);outline:none;transition:border-color .2s;}
+  .swrap input:focus{border-color:var(--yellow-dark);}
+  .swrap input::placeholder{color:var(--muted);}
+  .pills{display:flex;gap:7px;flex-wrap:wrap;}
+  .pill{padding:6px 13px;border-radius:20px;border:1.5px solid var(--border-dark);background:var(--card-bg);font-family:'Nunito',sans-serif;font-size:12px;font-weight:600;color:var(--mid);cursor:pointer;transition:all .18s;white-space:nowrap;}
+  .pill:hover{border-color:var(--yellow-dark);color:var(--dark);background:var(--yellow-pale);}
+  .pill.active{background:var(--yellow);border-color:var(--yellow);color:var(--black);}
+  .pill.pe.active{background:var(--red);border-color:var(--red);color:#fff;}
+  .pill.pe:hover:not(.active){border-color:var(--red);color:var(--red);background:#fde8e6;}
+
+  /* RESULTS INFO */
+  .results-bar{max-width:1140px;margin:20px auto 0;padding:0 20px;font-size:13px;color:var(--muted);}
+
+  /* MAIN */
+  .main{max-width:1140px;margin:0 auto;padding:20px 20px 64px;}
+  .region-block{margin-bottom:38px;}
+  .region-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--border);}
+  .region-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--black);display:flex;align-items:center;gap:8px;}
+  .region-title::before{content:'';display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--yellow);flex-shrink:0;}
+  .rcount{font-size:12px;font-weight:700;background:var(--yellow-light);color:var(--yellow-dark);border:1px solid #e0c840;padding:3px 10px;border-radius:20px;}
+
+  /* GRID */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:15px;}
+
+  /* CARD */
+  .card{background:var(--card-bg);border:1.5px solid var(--border);border-radius:14px;padding:18px;transition:transform .2s,box-shadow .2s,border-color .2s;position:relative;}
+  .card:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--yellow);}
+  .card.emg{border-color:#f0b8a0;}
+  .card.emg::before{content:'🚨 24×7';position:absolute;top:13px;right:13px;font-size:10px;font-weight:700;background:var(--orange-light);color:var(--orange);border:1px solid #f0c0a0;padding:2px 8px;border-radius:10px;}
+  .card-top{display:flex;align-items:flex-start;gap:11px;margin-bottom:12px;}
+  .card-ico{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;background:var(--yellow-light);border:1.5px solid #e8d060;}
+  .card-ico.bi{background:#dff0ff;border-color:#b0d4f0;}
+  .card-ico.oi{background:var(--orange-light);border-color:#f0c090;}
+  .card-ico.pi{background:#ede8ff;border-color:#c8b8f0;}
+  .card-ico.gi{background:#dff5df;border-color:#a8d8a8;}
+  .card-name{font-family:'Playfair Display',serif;font-size:14px;font-weight:600;color:var(--black);line-height:1.35;margin-bottom:3px;padding-right:55px;}
+  .card.emg .card-name{padding-right:70px;}
+  .card-area{font-size:11.5px;color:var(--muted);font-weight:500;}
+  .tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;}
+  .tag{font-size:11px;font-weight:600;padding:3px 9px;border-radius:12px;background:var(--ivory);color:var(--mid);border:1px solid var(--border-dark);}
+  .tag.f{background:var(--yellow-light);color:#8a6a00;border-color:#e0c840;}
+  .card-note{font-size:12px;color:var(--muted);line-height:1.55;margin-bottom:11px;font-style:italic;}
+  .contacts{display:flex;flex-direction:column;gap:5px;}
+  .cr{display:flex;align-items:center;gap:7px;font-size:12.5px;}
+  .cr .ci{font-size:13px;color:var(--muted);flex-shrink:0;}
+  .cr a{color:#5a3e00;text-decoration:none;font-weight:600;transition:color .15s;}
+  .cr a:hover{color:var(--orange);text-decoration:underline;}
+  .cr span{color:var(--mid);}
+  .hpill{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:3px 9px;border-radius:12px;margin-top:9px;letter-spacing:.02em;}
+  .h24{background:#e0f5e0;color:#1a6020;border:1px solid #a8d8a8;}
+  .hltd{background:var(--yellow-pale);color:#7a5a00;border:1px solid #e0c840;}
+  .no-res{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted);font-family:'Playfair Display',serif;font-size:17px;font-style:italic;}
+
+  /* FOOTER */
+  .dir-footer{background:var(--black);padding:26px 24px;text-align:center;border-top:3px solid var(--yellow);}
+  .footer-brand{font-family:'Playfair Display',serif;font-size:16px;color:var(--yellow);margin-bottom:6px;}
+  .footer-brand span{font-style:italic;}
+  .footer-text{font-size:12px;color:rgba(255,255,255,.38);line-height:1.9;}
+  .footer-text a{color:rgba(255,255,255,.55);text-decoration:none;}
+  .footer-text a:hover{color:var(--yellow);}
+
+  @media(max-width:600px){
+    .hero{padding:36px 14px 30px;}
+    .grid{grid-template-columns:1fr;}
+    .estrip{flex-direction:column;text-align:center;}
+    .enums{justify-content:center;}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-logo">
+    <span style="font-size:26px">🐾</span>
+    <span class="logo-text">Furever Meals</span>
+    <span class="logo-div"></span>
+    <span class="logo-sub">NGO Directory</span>
+  </div>
+  <div class="hero-tag">Animal Welfare Resource</div>
+  <h1>Find an NGO.<br><span>Save a Life.</span></h1>
+  <p class="hero-desc">A complete directory of animal welfare organisations across Mumbai, Navi Mumbai &amp; Thane — so help is always one tap away.</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-n" id="totalCount">60+</span><span class="stat-l">NGOs Listed</span></div>
+    <div class="stat"><span class="stat-n">3</span><span class="stat-l">Regions</span></div>
+    <div class="stat"><span class="stat-n">10+</span><span class="stat-l">24×7 Lines</span></div>
+    <div class="stat"><span class="stat-n">Free</span><span class="stat-l">Most Services</span></div>
+  </div>
+</div>
+
+<div class="estrip">
+  <div class="elabel">🚨 Animal Emergency?</div>
+  <div class="enums">
+    <div class="enum"><span class="n">7666680202</span><span class="l">RAWW 24×7</span></div>
+    <div class="enum"><span class="n">8767612344</span><span class="l">Thane SPCA</span></div>
+    <div class="enum"><span class="n">9082353277</span><span class="l">Wildlife Rehab</span></div>
+    <div class="enum"><span class="n">8104998550</span><span class="l">Dhyan (Large Animals)</span></div>
+    <div class="enum"><span class="n">8655370005</span><span class="l">Bird Helpline</span></div>
+  </div>
+</div>
+
+<div class="controls">
+  <div class="ctrl-inner">
+    <div class="swrap">
+      <span class="sico">🔍</span>
+      <input type="text" id="searchInput" placeholder="Search by name, area or service…" oninput="render()"/>
+    </div>
+    <div class="pills">
+      <button class="pill active"  onclick="setF('all',this)">All NGOs</button>
+      <button class="pill"         onclick="setF('Mumbai',this)">Mumbai</button>
+      <button class="pill"         onclick="setF('Navi Mumbai',this)">Navi Mumbai</button>
+      <button class="pill"         onclick="setF('Thane',this)">Thane</button>
+      <button class="pill"         onclick="setF('Extended',this)">Vasai / Virar / Kalyan</button>
+      <button class="pill pe"      onclick="setF('24x7',this)">🚨 24×7 Only</button>
+    </div>
+  </div>
+</div>
+
+<div class="results-bar" id="resultsBar"></div>
+<div class="main" id="mainContent"></div>
+
+<div class="dir-footer">
+  <div class="footer-brand">🐾 Furever <span>Meals</span></div>
+  <div class="footer-text">
+    Together, we can feed more — and help more.<br>
+    Contact details may change. Always verify before visiting an NGO.<br>
+    To add or update a listing → <a href="mailto:support@furevermeals.org">support@furevermeals.org</a>
+  </div>
+</div>
+
+<script>
+// ─── NGO DATA ───────────────────────────────────────────────────────────────
+// Region logic:
+// Mumbai       → city + western/central suburbs (Bandra to Dahisar, Kurla, Chembur, Mulund etc.)
+// Navi Mumbai  → Airoli, Ghansoli, Vashi, Turbhe, Nerul, Kharghar, Panvel, Belapur etc.
+// Thane        → Thane city, Dombivli, Kalwa, Mumbra, Murbad, Bhiwandi corridor
+// Extended     → Vasai, Virar, Nalasopara, Mira Road, Bhayandar, Kalyan, Ambernath
+
+const ngos = [
+
+  /* ═══════════════ MUMBAI ═══════════════ */
+  {
+    name:"Bombay SPCA (BSPCA)",
+    region:"Mumbai", area:"Parel — All Mumbai",
+    ico:"🏥", icoC:"gi",
+    services:["Hospital","Rescue","Adoption","Sterilisation","Crematorium","Post-Mortem"],
+    phone:["9372787750","8591659398","8369882992"],
+    email:"", website:"https://bombayspca.org",
+    hours:"24×7 Vet · OPD 9am–12pm", emg:true,
+    note:"Admits any animal anytime. Sterilisations for dogs & cats. Freezer service ₹1500/day. Post-mortem ₹100 cat / ₹500 dog."
+  },
+  {
+    name:"All India Animal Welfare Association (AIAWA)",
+    region:"Mumbai", area:"Mahalaxmi (East)",
+    ico:"💉", icoC:"bi",
+    services:["ABC","Vaccination","Surgery","Anti-Rabies","General OPD"],
+    phone:["022-23094077"],
+    email:"", website:"",
+    hours:"Mon–Sat", emg:false,
+    note:"Dr. E Moses Road, Dhobi Ghat, Mahalaxmi."
+  },
+  {
+    name:"Animals Matter to Me (AMTM)",
+    region:"Mumbai", area:"Malad West (Madh–Marve Rd)",
+    ico:"🐾", icoC:"",
+    services:["Hospital","Shelter","Adoption","Sterilisation","Ambulance"],
+    phone:["9920737737","7867911911"],
+    email:"", website:"",
+    hours:"12:30pm–5:30pm daily", emg:false,
+    note:"CTS 166/167 Ashram, Madh–Marve Rd, Malad West."
+  },
+  {
+    name:"RAWW – Resqink Assoc. for Wildlife Welfare",
+    region:"Mumbai", area:"Mumbai · Thane · Navi Mumbai",
+    ico:"🦎", icoC:"oi",
+    services:["Wildlife Rescue","Reptiles","Exotic Animals","Ambulance","Rehabilitation"],
+    phone:["7666680202"],
+    email:"", website:"https://www.raww.in",
+    hours:"11am–5:30pm (Emergency 24×7)", emg:true,
+    note:"25 trained rescuers across Mulund, Chembur, Palghar & Thane. 2 wildlife ambulances."
+  },
+  {
+    name:"YODA – Youth Org. in Defence of Animals",
+    region:"Mumbai", area:"Khar West",
+    ico:"🐾", icoC:"pi",
+    services:["Rescue","Rehabilitation","Adoption","Awareness Programs"],
+    phone:["8899997704"],
+    email:"", website:"",
+    hours:"10am–7pm", emg:false,
+    note:"Pragati Bungalow, 3rd Road, Khar West. Awareness programs in schools & slums."
+  },
+  {
+    name:"Welfare of Stray Dogs (WSD)",
+    region:"Mumbai", area:"Colaba to Sion (Central & South)",
+    ico:"🐕", icoC:"bi",
+    services:["On-road Treatment","Sterilisation","Rabies Vaccination","No Shelter"],
+    phone:["8976022838"],
+    email:"", website:"",
+    hours:"9am–5pm, 7 days", emg:false,
+    note:"Covers Colaba, Dadar, Parel, Lower Parel, Worli, Mahim, Byculla, Sion. Rabies vax goes all over Mumbai."
+  },
+  {
+    name:"HAB – Help Animals & Birds",
+    region:"Mumbai", area:"Colaba to Dadar (Rehab: Masjid Bandar)",
+    ico:"🕊️", icoC:"bi",
+    services:["Rescue","Rehabilitation","Cat Sterilisation","Critical Care","Surgery"],
+    phone:["9223333338","9322333338","9892333338"],
+    email:"", website:"",
+    hours:"10am–7pm, 7 days", emg:false,
+    note:"₹800 admission fee. Critical care & surgery at nominal cost. Ambulance subject to availability."
+  },
+  {
+    name:"Dhyan Foundation Animal Ambulance",
+    region:"Mumbai", area:"All Maharashtra (Large Animals)",
+    ico:"🚑", icoC:"oi",
+    services:["Large Animal Ambulance","Cattle Rescue","Horse & Donkey"],
+    phone:["8104998550","8104996876"],
+    email:"", website:"",
+    hours:"9am–6pm, 7 days", emg:true,
+    note:"Hydraulic vehicle for large animals. Fuel charges applicable."
+  },
+  {
+    name:"Save Our Strays",
+    region:"Mumbai", area:"Bandra to Dahisar (East & West)",
+    ico:"🐕", icoC:"",
+    services:["Sterilisation (Dogs)","Sterilisation (Cats)","Rescue"],
+    phone:["9820141310"],
+    email:"", website:"",
+    hours:"4 days/week dogs, 2 days/week cats", emg:false,
+    note:"26/101 Garden View Bldg, Oshiwara, Andheri West. Essentially a sterilisation NGO."
+  },
+  {
+    name:"Save Birds – Free Treatment Centre",
+    region:"Mumbai", area:"Kandivali & Malad",
+    ico:"🐦", icoC:"bi",
+    services:["Bird Rescue","Bird Treatment","Rehabilitation"],
+    phone:["8451899899"],
+    email:"", website:"",
+    hours:"10am–6pm, 7 days", emg:false,
+    note:"Kandivali Mukta Baug Jain Hospital, opp. RTO Office, Malad West. Birds only."
+  },
+  {
+    name:"Save Birds Kandivali (24×7)",
+    region:"Mumbai", area:"Kandivali (East & West)",
+    ico:"🦜", icoC:"bi",
+    services:["Bird Rescue","Bat Rescue","24×7 Helpline"],
+    phone:["8828879490","8451899899"],
+    email:"", website:"",
+    hours:"10am–7pm (24×7 helpline)", emg:true,
+    note:"Includes bats. No pickup/drop due to restrictions; guidance provided."
+  },
+  {
+    name:"Bird Helpline Mumbai (BHL)",
+    region:"Mumbai", area:"Bandra & surrounds",
+    ico:"🐦", icoC:"bi",
+    services:["Bird Rescue","Treatment","All Mumbai emergencies"],
+    phone:["8655370005","8655370006"],
+    email:"", website:"",
+    hours:"Daily", emg:true,
+    note:"Free for all birds. Will also pick animals in dire emergencies."
+  },
+  {
+    name:"Utkarsh Animal Hospital – Mulund",
+    region:"Mumbai", area:"Mulund West",
+    ico:"🏥", icoC:"gi",
+    services:["Birds Treatment","Hospital","No Shelter"],
+    phone:["8976925958","2225676000"],
+    email:"", website:"",
+    hours:"24×7", emg:true,
+    note:"B-31,34,35 & 36, Minerva Industrial Estate, Mulund West. Birds ₹300 charged. No shelter."
+  },
+  {
+    name:"Wildlife Rehabilitation Trust",
+    region:"Mumbai", area:"All Maharashtra",
+    ico:"🦅", icoC:"oi",
+    services:["Wildlife Rescue","Treatment","Relocation"],
+    phone:["9082353277"],
+    email:"", website:"",
+    hours:"24×7, 7 days", emg:true,
+    note:"Phase-II, Farid Estate, Huzefa Nagar, Kandivali East. Charges depend on case."
+  },
+  {
+    name:"Jeevdaya Mangal Vardhini",
+    region:"Mumbai", area:"Ghatkopar East",
+    ico:"🕊️", icoC:"bi",
+    services:["Wildlife Rescue","Bird Rescue","Rehabilitation"],
+    phone:["8655252573"],
+    email:"", website:"",
+    hours:"Daily", emg:false,
+    note:"Gala 59, Vallabh Society, 90 Feet Road, Ghatkopar East."
+  },
+  {
+    name:"Vardhaman Sanskar Dham – Animal Ambulance",
+    region:"Mumbai", area:"Mumbai only",
+    ico:"🚑", icoC:"oi",
+    services:["Ambulance","Domestic Animals","Free Service"],
+    phone:["2225069191"],
+    email:"", website:"",
+    hours:"9:30am–6pm, 7 days", emg:false,
+    note:"69, Vallabh Society, Pant Nagar, Ghatkopar East. Free ambulance for domestic animals."
+  },
+  {
+    name:"Vardhaman Sanskar (On-road treatment)",
+    region:"Mumbai", area:"Goregaon · Kandivali · Malad (E&W, excl. Malwani)",
+    ico:"🐾", icoC:"",
+    services:["On-road Treatment","Dogs","Cats"],
+    phone:["9930106106"],
+    email:"", website:"",
+    hours:"10am–7pm, Mon–Sat", emg:false,
+    note:"Free on-road treatment for dogs and cats."
+  },
+  {
+    name:"World For All – Animal Rescue",
+    region:"Mumbai", area:"Andheri East · Powai · Jogeshwari · Goregaon · Parla · Juhu",
+    ico:"🐕", icoC:"",
+    services:["On-road Treatment","Dogs","Cats"],
+    phone:["9820001506"],
+    email:"", website:"",
+    hours:"8am–5pm, Mon–Sat", emg:false,
+    note:"East only. Free on-road treatment for dogs and cats."
+  },
+  {
+    name:"World For All – Rescue & Adoptions",
+    region:"Mumbai", area:"Andheri East",
+    ico:"🐾", icoC:"pi",
+    services:["Rescue","Adoption","Medical Support"],
+    phone:["9960304595","9004257179"],
+    email:"", website:"",
+    hours:"Mon–Sat", emg:false,
+    note:""
+  },
+  {
+    name:"Awaaz",
+    region:"Mumbai", area:"Andheri · Jogeshwari · Vile Parla · Goregaon (East only)",
+    ico:"🐱", icoC:"pi",
+    services:["Cat Sterilisation"],
+    phone:["7900094345"],
+    email:"", website:"",
+    hours:"9am–5pm, Mon–Sat", emg:false,
+    note:"Cat sterilisations only."
+  },
+  {
+    name:"SRLC",
+    region:"Mumbai", area:"Andheri · Khar · Vile Parla · Sion · Bandra · Santacruz · Wadala (East only)",
+    ico:"🐾", icoC:"",
+    services:["On-road Treatment","Domestic Animals"],
+    phone:["9822921100","7030159900"],
+    email:"", website:"",
+    hours:"10am–6pm, Mon–Sat", emg:false,
+    note:"₹100 charge per case. East side only."
+  },
+  {
+    name:"ASHA – Association for Service & Healing of Animals",
+    region:"Mumbai", area:"Andheri · Jogeshwari · Goregaon · Parla · Santacruz (E&W)",
+    ico:"❤️", icoC:"pi",
+    services:["On-road Treatment","Admitting to BSPCA/AHIMSA"],
+    phone:["9820127085"],
+    email:"", website:"",
+    hours:"10am–6pm, Mon–Sat", emg:false,
+    note:"Caller pays ₹500 entry fee. Facilitates admission to partner hospitals."
+  },
+  {
+    name:"SAARP Mumbai",
+    region:"Mumbai", area:"All Mumbai · Thane · Palghar",
+    ico:"🐍", icoC:"oi",
+    services:["Reptile Rescue","Snake Relocation"],
+    phone:["9821134056","8108902286"],
+    email:"", website:"",
+    hours:"10am–6pm, Mon–Sat (24×7 helpline)", emg:true,
+    note:"Free reptile rescue and relocation across Mumbai, Thane & Palghar."
+  },
+  {
+    name:"Jivdaya Abhiyan",
+    region:"Mumbai", area:"Malad & Goregaon (East only)",
+    ico:"🐾", icoC:"",
+    services:["Animal Welfare","Rescue"],
+    phone:["8828261212"],
+    email:"", website:"",
+    hours:"Daily", emg:false,
+    note:""
+  },
+  {
+    name:"Udaan – Bird Rescue",
+    region:"Mumbai", area:"Malad West",
+    ico:"🐦", icoC:"bi",
+    services:["Bird Rescue","Stuck / Hanging Bird"],
+    phone:["8898101015"],
+    email:"", website:"",
+    hours:"10am–7pm, all days", emg:false,
+    note:"Free rescue for birds stuck or hanging. Malad area only."
+  },
+  {
+    name:"Samkit Yuvak Mandal – Andheri",
+    region:"Mumbai", area:"Andheri",
+    ico:"🐦", icoC:"bi",
+    services:["Bird Camps","Animal Welfare"],
+    phone:["9820997699"],
+    email:"", website:"",
+    hours:"Daily", emg:false,
+    note:"Occasional free camps for birds and animals."
+  },
+  {
+    name:"Samkit Yuvak Mandal – Borivali & Dahisar",
+    region:"Mumbai", area:"Borivali & Dahisar",
+    ico:"🐦", icoC:"bi",
+    services:["Bird Camps","Animal Welfare"],
+    phone:["9324747555","8080000804","8928720698"],
+    email:"", website:"",
+    hours:"Daily", emg:false,
+    note:""
+  },
+  {
+    name:"Raksha Animal Welfare Center",
+    region:"Mumbai", area:"Lower Parel",
+    ico:"🐾", icoC:"gi",
+    services:["Animal Welfare","Rescue","Treatment"],
+    phone:["9082198551"],
+    email:"", website:"",
+    hours:"2pm–4pm, Sun–Fri", emg:false,
+    note:"Laxmi Woollen Mill Estate, Shakti Mills Lane, off Dr. E Moses Road."
+  },
+  {
+    name:"Helping Hands Animal Welfare Foundation",
+    region:"Mumbai", area:"Sion West",
+    ico:"🤝", icoC:"gi",
+    services:["Animal Welfare","Rescue"],
+    phone:["8850285889"],
+    email:"", website:"",
+    hours:"All days", emg:false,
+    note:""
+  },
+  {
+    name:"WeLove Animals Foundation",
+    region:"Mumbai", area:"Lower Parel (Worli)",
+    ico:"❤️", icoC:"pi",
+    services:["Coordination","Rescue Support","NGO Directory"],
+    phone:["7506609954"],
+    email:"", website:"https://www.weloveanimals.foundation",
+    hours:"Daily", emg:false,
+    note:"Shah & Nahar Industrial Estate, Sitaram Jadhav Marg, Lower Parel."
+  },
+  {
+    name:"Sherry and Diya Foundation",
+    region:"Mumbai", area:"Kamathipura / Mumbai Central",
+    ico:"🐾", icoC:"pi",
+    services:["Animal Welfare","Rescue"],
+    phone:["1800 123 1137"],
+    email:"", website:"",
+    hours:"9am–10pm, Mon–Sat", emg:false,
+    note:"1st Lane, near Pujari Building, Navjeevan Society, Siddharth Nagar, Kamathipura."
+  },
+  {
+    name:"All About Them Foundation",
+    region:"Mumbai", area:"Worli Naka",
+    ico:"🏥", icoC:"gi",
+    services:["Hospital","Rescue","Adoption"],
+    phone:["9136782348"],
+    email:"", website:"",
+    hours:"Daily", emg:false,
+    note:"15, Dr Elijah Moses Rd, beside Furniturewala, Worli Naka."
+  },
+  {
+    name:"The Feline Foundation",
+    region:"Mumbai", area:"Versova / Andheri West",
+    ico:"🐱", icoC:"pi",
+    services:["Cat Rescue","Rehabilitation","Medical Care"],
+    phone:["9324524373"],
+    email:"", website:"",
+    hours:"Daily", emg:false,
+    note:"Bungalow 104, Aram Nagar Part 2, J.P. Road, Versova."
+  },
+  {
+    name:"Animal Rescue and Care (ARAC)",
+    region:"Mumbai", area:"Kandivali East",
+    ico:"🐾", icoC:"",
+    services:["Rescue","Adoption","Medical Support"],
+    phone:["9920722633"],
+    email:"", website:"",
+    hours:"Daily", emg:false,
+    note:"Thakur Village, Kandivali East."
+  },
+  {
+    name:"Karuna NGO Night Ambulance",
+    region:"Mumbai", area:"Goregaon to Bhayandar (Night coverage)",
+    ico:"🚑", icoC:"oi",
+    services:["Night Ambulance","On-road Treatment","Dogs & Cats"],
+    phone:["9920299533","9833625427","02228761313"],
+    email:"", website:"",
+    hours:"9:30am–6pm day; night coverage available", emg:true,
+    note:"Covers Goregaon to Bhayandar East & West. Night service available."
+  },
+
+  /* ═══════════════ NAVI MUMBAI ═══════════════ */
+  {
+    name:"Bhumi Jeevdaya Samvardhan Trust",
+    region:"Navi Mumbai", area:"Airoli · Ghansoli · Vashi · Turbhe · Nerul · Belapur · Kharghar · Panvel",
+    ico:"🌿", icoC:"gi",
+    services:["Spot Treatment","Shelter","Admission","On-road Team","Wildlife"],
+    phone:["8424004484"],
+    email:"bhumijeevdayanm@gmail.com", website:"https://bhumijeevdaya.org",
+    hours:"10am–6pm, Mon–Sat", emg:false,
+    note:"1st Floor, Plot 71, Near Janta Market, Sector 23, Turbhe. Spot treatment free if non-critical. Founded 2014; treated 25,000+ animals."
+  },
+  {
+    name:"Reptiles and Aves Rescue",
+    region:"Navi Mumbai", area:"All Navi Mumbai",
+    ico:"🦎", icoC:"oi",
+    services:["Reptile Rescue","Owl Rescue","Bird Rescue","Relocation"],
+    phone:["9987970640"],
+    email:"", website:"",
+    hours:"24×7, 7 days", emg:true,
+    note:"Juhu Gaon, Juinagar. Free rescue and relocation."
+  },
+  {
+    name:"IDA – In Defense of Animals (Panvel)",
+    region:"Navi Mumbai", area:"Panvel · Khandeshwar · Kalamboli · Kharghar · Taloja · Ulave · Karanjade · Kalundri",
+    ico:"🐕", icoC:"gi",
+    services:["Rescue","OPD","Sterilisation"],
+    phone:["9320056589"],
+    email:"info@idaindia.org", website:"https://www.idaindia.org",
+    hours:"9am–5pm (No night admissions)", emg:false,
+    note:"Sector 15, New Panvel East, near Moksh Dham. Panvel pickup only; no mobile van."
+  },
+  {
+    name:"IDA – In Defense of Animals (Turbhe)",
+    region:"Navi Mumbai", area:"Belapur · Nerul · Vashi · Turbhe · Koparkhairane · Ghansoli · Airoli · Juinagar · Sanpada · Seawoods · Rabale",
+    ico:"🐕", icoC:"gi",
+    services:["Rescue","Sterilisation","Night Van","OPD"],
+    phone:["9320056585"],
+    email:"info@idaindia.org", website:"https://www.idaindia.org",
+    hours:"Day + Night Service available", emg:true,
+    note:"Inside Sanjivani Construction gate, near Lubrizol Company, Turbhe Naka."
+  },
+  {
+    name:"Apna Home Animal Shelter",
+    region:"Navi Mumbai", area:"All Navi Mumbai",
+    ico:"🏠", icoC:"pi",
+    services:["Shelter (Strays — Free)","Shelter (Pets — Nominal)","Spot Treatment","Video Consultation"],
+    phone:["9322191638"],
+    email:"", website:"",
+    hours:"24×7, 7 days", emg:true,
+    note:"Siddhi Karavale, Kharghar area. Strays admitted free; pets at nominal cost."
+  },
+  {
+    name:"Feed The Dogs",
+    region:"Navi Mumbai", area:"Nerul, Navi Mumbai",
+    ico:"🍖", icoC:"",
+    services:["Feeding","Animal Welfare"],
+    phone:["9004175141"],
+    email:"", website:"",
+    hours:"Daily", emg:false,
+    note:"8A, Lane 2, Nandanvan Society, Sector 17, Nerul."
+  },
+  {
+    name:"Snake Catcher / Serpamitra",
+    region:"Navi Mumbai", area:"Rabale & Navi Mumbai",
+    ico:"🐍", icoC:"oi",
+    services:["Snake Rescue","Reptile Rescue"],
+    phone:["7900080011"],
+    email:"", website:"",
+    hours:"All days", emg:true,
+    note:"Room 1010, Ashwini Nagar, Rabale MIDC Rd, Rabale."
+  },
+
+  /* ═══════════════ THANE ═══════════════ */
+  {
+    name:"Thane SPCA",
+    region:"Thane", area:"Thane District (incl. Raigad & Palghar)",
+    ico:"🏥", icoC:"gi",
+    services:["Dogs & Cats","Spot Treatment","IPD / OPD","Hospital"],
+    phone:["8767612344"],
+    email:"", website:"",
+    hours:"9:30am–6pm, 7 days (Hospital 24×7)", emg:true,
+    note:"N.K.T Compound, Kolshet Road, Azad Nagar, Thane West. ₹400/case spot treatment. Call before visiting."
+  },
+  {
+    name:"Animal Care and Welfare Trust",
+    region:"Thane", area:"Thane",
+    ico:"🏥", icoC:"gi",
+    services:["Animal Care","Welfare","Treatment"],
+    phone:["8108200184"],
+    email:"", website:"",
+    hours:"10:30am–9:30pm, all days", emg:false,
+    note:"Kopari, Anand Nagar Rd, near Kamgar Kalyan Kendra, Thane."
+  },
+  {
+    name:"Wildlife Welfare Association (WWA)",
+    region:"Thane", area:"Mumbai · Navi Mumbai · Thane",
+    ico:"🦜", icoC:"oi",
+    services:["Wildlife Rescue","Relocation","Treatment"],
+    phone:["9757322901"],
+    email:"", website:"",
+    hours:"24×7, 7 days", emg:true,
+    note:"Plot 384, New Mhadha Colony, Vartak Nagar, Thane West. Free service."
+  },
+  {
+    name:"Freedom Farm – Citizens for Animal Protection",
+    region:"Thane", area:"Thane East & West",
+    ico:"🌾", icoC:"gi",
+    services:["Spot Treatment","Rescue","Emergency Shelter"],
+    phone:["9324610601"],
+    email:"", website:"",
+    hours:"9am–6pm, 7 days", emg:false,
+    note:"Unnathi Woods Rd, Vijay Park, Kasarvadavali, Thane West. Free for emergency cases."
+  },
+  {
+    name:"PALS",
+    region:"Thane", area:"Thane City (East & West)",
+    ico:"🐾", icoC:"",
+    services:["On-road Treatment","Ambulance"],
+    phone:["9324699829"],
+    email:"", website:"",
+    hours:"12pm–8pm, Thu–Tue", emg:false,
+    note:"Treatment free; medicines chargeable. Ambulance ₹100. No shelter."
+  },
+  {
+    name:"PAWS – Dombivali",
+    region:"Thane", area:"Thakurli · Kalyan · Titwada · Vittalwadi · Shahad · Ambivli",
+    ico:"🐾", icoC:"",
+    services:["Ambulance","Hospital (Murbad)","On-road Treatment","Stray Rescue"],
+    phone:["9820161114"],
+    email:"", website:"",
+    hours:"12pm–3:30pm, Mon–Sat", emg:false,
+    note:"Dogs released between 6–9pm. Transport to Murbad hospital."
+  },
+  {
+    name:"MAWS – Mumbra Animal Welfare Society",
+    region:"Thane", area:"Kalwa · Mumbra · Diwa",
+    ico:"🐾", icoC:"",
+    services:["Spot Treatment","Emergency Shelter","Domestic & Wildlife","OPS"],
+    phone:["9619317118","9221280948"],
+    email:"", website:"",
+    hours:"10am–10pm, Sat–Thu", emg:false,
+    note:"Mumbra. On-spot treatment and emergency shelter — free."
+  },
+  {
+    name:"NGO Shivalay Rudra Pratishthan Animal Trust",
+    region:"Thane", area:"Dombivli",
+    ico:"🐾", icoC:"pi",
+    services:["Animal Welfare","Rescue","24×7"],
+    phone:["8451884868"],
+    email:"", website:"",
+    hours:"24×7, all days", emg:true,
+    note:"Nilje Gaon, opp. Chandresh Godavari, Dombivli."
+  },
+  {
+    name:"Sharanam Animal Care and Rescue Center",
+    region:"Thane", area:"Thane West",
+    ico:"🏠", icoC:"pi",
+    services:["Rescue","Animal Care","Shelter"],
+    phone:["9136158595"],
+    email:"", website:"",
+    hours:"9am–11pm, all days", emg:false,
+    note:"Koliwada, Thane West. Private rescue center."
+  },
+  {
+    name:"Hands That Heal Animal Care Foundation",
+    region:"Thane", area:"Karnala / Panvel outskirts",
+    ico:"🤝", icoC:"gi",
+    services:["Animal Care","Rescue","Rehabilitation"],
+    phone:["7718982119"],
+    email:"", website:"",
+    hours:"Daily", emg:false,
+    note:"Farm House, 79, Kalle Road, next to RiverRock Bungalow, Karnala."
+  },
+
+  /* ═══════════════ EXTENDED (Vasai / Virar / Mira Road / Kalyan) ═══════════════ */
+  {
+    name:"AHINSA Charitable Trust",
+    region:"Extended", area:"Mira Road & Bhayandar (West only)",
+    ico:"🐾", icoC:"",
+    services:["On-road Treatment","Dogs","Cats","Birds"],
+    phone:["9821391283"],
+    email:"", website:"",
+    hours:"9am–6pm, Mon–Sat", emg:false,
+    note:"Free on-road treatment."
+  },
+  {
+    name:"Karuna Trust Virar",
+    region:"Extended", area:"Virar to Naigaon (East & West)",
+    ico:"🐾", icoC:"gi",
+    services:["On-road Treatment","All Animals"],
+    phone:["9273910004"],
+    email:"", website:"",
+    hours:"10am–6pm, 7 days", emg:false,
+    note:"Free treatment, no shelter."
+  },
+  {
+    name:"Divya Jyot",
+    region:"Extended", area:"Virar · Vasai · Nalasopara",
+    ico:"🐾", icoC:"pi",
+    services:["On-road Treatment"],
+    phone:["9320004343","9322004343"],
+    email:"", website:"",
+    hours:"11am–6pm", emg:false,
+    note:""
+  },
+  {
+    name:"Samkit Yuvak Mandal – Nalasopara",
+    region:"Extended", area:"All Mumbai (camps)",
+    ico:"🐦", icoC:"bi",
+    services:["Bird Camps","Occasional Camps","Free"],
+    phone:["8108543152"],
+    email:"", website:"",
+    hours:"Anytime (occasional camps)", emg:false,
+    note:""
+  },
+  {
+    name:"Rescue Ambulance – Western Mumbai",
+    region:"Extended", area:"Borivali · Virar · Vasai",
+    ico:"🚑", icoC:"oi",
+    services:["Ambulance","Rescue"],
+    phone:["9920499404","9619933223","7715012117"],
+    email:"", website:"",
+    hours:"Daily", emg:false,
+    note:"Call for pickup coverage confirmation."
+  },
+];
+
+// ─── RENDER ─────────────────────────────────────────────────────────────────
+let activeF = 'all';
+const REGIONS = ['Mumbai','Navi Mumbai','Thane','Extended'];
+const RICONS  = {Mumbai:'🏙️','Navi Mumbai':'🌆',Thane:'🌳',Extended:'🛣️'};
+const RLABELS = {Mumbai:'Mumbai',  'Navi Mumbai':'Navi Mumbai', Thane:'Thane', Extended:'Vasai / Virar / Mira Road / Kalyan'};
+
+function setF(f, btn){
+  activeF = f;
+  document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function getFiltered(){
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  return ngos.filter(n=>{
+    const rOk = activeF==='all' || n.region===activeF || (activeF==='24x7' && n.emg);
+    const sOk = !q || n.name.toLowerCase().includes(q) || n.area.toLowerCase().includes(q)
+              || n.services.some(s=>s.toLowerCase().includes(q)) || n.region.toLowerCase().includes(q)
+              || (n.note && n.note.toLowerCase().includes(q));
+    return rOk && sOk;
+  });
+}
+
+function render(){
+  const filtered = getFiltered();
+  const wrap = document.getElementById('mainContent');
+  const bar  = document.getElementById('resultsBar');
+
+  if(!filtered.length){
+    bar.textContent='';
+    wrap.innerHTML=`<div class="grid"><div class="no-res">No organisations found — try a different search term.</div></div>`;
+    return;
+  }
+
+  const regions = (activeF==='all'||activeF==='24x7') ? REGIONS : [activeF];
+  bar.textContent = `Showing ${filtered.length} organisation${filtered.length!==1?'s':''}`;
+
+  let html='';
+  regions.forEach(region=>{
+    const list = filtered.filter(n=>n.region===region);
+    if(!list.length) return;
+    html+=`<div class="region-block">
+      <div class="region-head">
+        <div class="region-title">${RICONS[region]} ${RLABELS[region]}</div>
+        <span class="rcount">${list.length} NGO${list.length>1?'s':''}</span>
+      </div>
+      <div class="grid">`;
+    list.forEach(n=>{
+      const phones = n.phone.map(p=>`<div class="cr"><span class="ci">📞</span><a href="tel:${p.replace(/[\s\-()]/g,'')}">${p}</a></div>`).join('');
+      const email  = n.email  ? `<div class="cr"><span class="ci">✉️</span><a href="mailto:${n.email}">${n.email}</a></div>` : '';
+      const web    = n.website? `<div class="cr"><span class="ci">🌐</span><a href="${n.website}" target="_blank">Visit Website</a></div>` : '';
+      const tags   = n.services.map((s,i)=>`<span class="tag${i===0?' f':''}">${s}</span>`).join('');
+      const hClass = (n.hours.includes('24')||n.hours.toLowerCase().includes('night')) ? 'h24':'hltd';
+      const hIcon  = hClass==='h24'?'🟢':'🕐';
+      html+=`<div class="card${n.emg?' emg':''}">
+        <div class="card-top">
+          <div class="card-ico ${n.icoC}">${n.ico}</div>
+          <div>
+            <div class="card-name">${n.name}</div>
+            <div class="card-area">📍 ${n.area}</div>
+          </div>
+        </div>
+        <div class="tags">${tags}</div>
+        ${n.note?`<p class="card-note">${n.note}</p>`:''}
+        <div class="contacts">
+          ${phones}${email}${web}
+          <span class="hpill ${hClass}">${hIcon} ${n.hours}</span>
+        </div>
+      </div>`;
+    });
+    html+=`</div></div>`;
+  });
+  wrap.innerHTML=html;
+  document.getElementById('totalCount').textContent=ngos.length+'+';
+}
+
+render();
+</script>
+</body>
+</html>
