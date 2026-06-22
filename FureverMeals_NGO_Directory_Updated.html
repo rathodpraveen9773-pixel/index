@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Animal Helplines FMS | Furever Meals</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+/* ── TOKENS ── */
+:root {
+  --ivory:        #F8F5EF;
+  --warm-white:   #FFFDF7;
+  --yellow:       #F4B400;
+  --yellow-hover: #E09B00;
+  --yellow-light: #FDF3B0;
+  --yellow-pale:  #FFFBE8;
+  --black:        #1A1A1A;
+  --dark:         #2C2C2C;
+  --mid:          #555555;
+  --muted:        #8A8A8A;
+  --border:       #E8E0CC;
+  --border-mid:   #D4C8A8;
+  --card:         #FFFFFF;
+  --orange:       #E07020;
+  --orange-lt:    #FDE8CC;
+  --red:          #B83020;
+  --red-lt:       #FDEAE6;
+  --green:        #2A6E3A;
+  --green-lt:     #E0F5E4;
+  --blue-lt:      #E0EEFF;
+  --blue:         #1A5FA0;
+  --purple-lt:    #EDE8FF;
+  --purple:       #5A3A9A;
+  --shadow:       0 4px 24px rgba(0,0,0,0.09);
+  --radius:       14px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Nunito',sans-serif;background:var(--ivory);color:var(--black);min-height:100vh;-webkit-font-smoothing:antialiased;}
+
+
+.fm-hero{
+background:linear-gradient(135deg,#f8f5ef 0%,#fffdf8 100%);
+padding:60px 20px;
+border-bottom:3px solid #f4b400;
+}
+.hero-content{max-width:1000px;margin:auto;text-align:center;}
+.hero-logo{width:70px;height:70px;margin:0 auto 15px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#f4b400;font-size:32px;}
+.hero-badge{display:inline-block;background:#fff5cc;color:#7a5a00;border:1px solid #e6c25e;padding:8px 16px;border-radius:50px;font-size:12px;font-weight:700;letter-spacing:1px;margin-bottom:20px;}
+.fm-hero h1{font-family:'Playfair Display',serif;font-size:48px;margin-bottom:15px;color:#2b2b2b;}
+.fm-hero p{max-width:700px;margin:auto;color:#666;line-height:1.8;font-size:17px;margin-bottom:30px;}
+.hero-search{max-width:650px;margin:auto;}
+.hero-search input{width:100%;padding:16px 20px;border-radius:14px;border:1px solid #ddd;font-size:16px;}
+
+/* ── BANNER (SVG HERO) ── */
+.banner-wrap{width:100%;overflow:hidden;display:block;line-height:0;}
+.banner-wrap svg{width:100%;height:auto;display:block;}
+
+/* ── EMERGENCY STRIP ── */
+.estrip{background:var(--red);padding:14px 20px;display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;}
+.elabel{font-size:12px;font-weight:700;color:#fff;letter-spacing:.08em;text-transform:uppercase;display:flex;align-items:center;gap:6px;white-space:nowrap;}
+.enums{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.enum{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:7px;padding:5px 12px;text-align:center;cursor:pointer;transition:background .2s;}
+.enum:hover{background:rgba(255,255,255,.25);}
+.enum .en{color:#fff;font-weight:700;font-size:13px;display:block;}
+.enum .el{color:rgba(255,255,255,.6);font-size:10px;display:block;letter-spacing:.03em;}
+
+/* ── NAV TABS ── */
+.nav-tabs{background:var(--warm-white);border-bottom:2px solid var(--yellow);position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,.07);}
+.nav-inner{max-width:1160px;margin:0 auto;display:flex;align-items:center;gap:0;padding:0 20px;}
+.nav-tab{padding:14px 20px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--mid);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none;}
+.nav-tab:hover{color:var(--black);}
+.nav-tab.active{color:var(--black);border-bottom-color:var(--yellow);}
+
+/* ── PAGES ── */
+.page{display:none;max-width:1160px;margin:0 auto;padding:28px 20px 64px;}
+.page.active{display:block;}
+
+/* ── SECTION HEADER ── */
+.section-hd{margin-bottom:24px;}
+.section-hd h2{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--black);margin-bottom:6px;}
+.section-hd p{font-size:14px;color:var(--muted);line-height:1.6;}
+
+/* ── FILTERS ── */
+.filter-bar{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px 18px;margin-bottom:22px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;}
+.filter-group{display:flex;flex-direction:column;gap:6px;flex:1;min-width:160px;}
+.filter-group label{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;}
+.filter-group input,.filter-group select{padding:8px 12px;border:1.5px solid var(--border-mid);border-radius:8px;font-family:'Nunito',sans-serif;font-size:13px;color:var(--black);background:var(--warm-white);outline:none;transition:border-color .2s;}
+.filter-group input:focus,.filter-group select:focus{border-color:var(--yellow-hover);}
+.pills{display:flex;gap:7px;flex-wrap:wrap;align-items:center;}
+.pill{padding:6px 13px;border-radius:20px;border:1.5px solid var(--border-mid);background:var(--card);font-family:'Nunito',sans-serif;font-size:12px;font-weight:600;color:var(--mid);cursor:pointer;transition:all .18s;white-space:nowrap;}
+.pill:hover{border-color:var(--yellow-hover);color:var(--black);background:var(--yellow-pale);}
+.pill.active{background:var(--yellow);border-color:var(--yellow);color:var(--black);}
+.pill.pemg.active{background:var(--red);border-color:var(--red);color:#fff;}
+.pill.pemg:hover:not(.active){border-color:var(--red);color:var(--red);background:var(--red-lt);}
+
+/* ── RESULTS BAR ── */
+.rbar{font-size:13px;color:var(--muted);margin-bottom:14px;padding:0 2px;}
+
+/* ── REGION ── */
+.region-block{margin-bottom:36px;}
+.region-head{display:flex;align-items:center;justify-content:space-between;padding-bottom:10px;border-bottom:2px solid var(--border);margin-bottom:16px;}
+.region-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--black);display:flex;align-items:center;gap:8px;}
+.region-title::before{content:'';display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--yellow);flex-shrink:0;}
+.rcount{font-size:11px;font-weight:700;background:var(--yellow-light);color:var(--yellow-hover);border:1px solid #DDB810;padding:3px 10px;border-radius:20px;}
+
+/* ── GRID ── */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:15px;}
+.no-res{grid-column:1/-1;text-align:center;padding:56px 20px;color:var(--muted);font-family:'Playfair Display',serif;font-size:17px;font-style:italic;}
+
+/* ── CARD ── */
+.card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:18px;transition:transform .2s,box-shadow .2s,border-color .2s;position:relative;}
+.card:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--yellow);}
+.card.emg{border-color:#F0B090;}
+.card.emg::before{content:'🚨 24×7';position:absolute;top:13px;right:13px;font-size:10px;font-weight:700;background:var(--orange-lt);color:var(--orange);border:1px solid #F0B870;padding:2px 8px;border-radius:10px;}
+.card-top{display:flex;align-items:flex-start;gap:11px;margin-bottom:12px;}
+.card-ico{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;background:var(--yellow-light);border:1.5px solid #DDB810;}
+.card-ico.bi{background:var(--blue-lt);border-color:#90B8E0;}
+.card-ico.oi{background:var(--orange-lt);border-color:#E8A870;}
+.card-ico.pi{background:var(--purple-lt);border-color:#B0A0D8;}
+.card-ico.gi{background:var(--green-lt);border-color:#90C8A0;}
+.card-name{font-family:'Playfair Display',serif;font-size:14px;font-weight:600;color:var(--black);line-height:1.35;margin-bottom:3px;padding-right:55px;}
+.card.emg .card-name{padding-right:72px;}
+.card-area{font-size:11.5px;color:var(--muted);font-weight:500;}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;}
+.tag{font-size:11px;font-weight:600;padding:3px 9px;border-radius:12px;background:var(--ivory);color:var(--mid);border:1px solid var(--border-mid);}
+.tag.f{background:var(--yellow-light);color:#7A5A00;border-color:#DDB810;}
+.tag.dog{background:#FFF0DC;color:#8A4A00;border-color:#E8C070;}
+.tag.cat{background:#F5E8FF;color:#6A2A8A;border-color:#C0A0D8;}
+.tag.bird{background:var(--blue-lt);color:var(--blue);border-color:#90B8E0;}
+.tag.wildlife{background:var(--green-lt);color:var(--green);border-color:#90C8A0;}
+.tag.reptile{background:#E8FFE8;color:#1A6A1A;border-color:#80C080;}
+.card-note{font-size:12px;color:var(--muted);line-height:1.55;margin-bottom:11px;font-style:italic;}
+.contacts{display:flex;flex-direction:column;gap:5px;}
+.cr{display:flex;align-items:center;gap:7px;font-size:12.5px;}
+.cr .ci{font-size:13px;color:var(--muted);flex-shrink:0;}
+.cr a{color:#5A3A00;text-decoration:none;font-weight:600;transition:color .15s;}
+.cr a:hover{color:var(--orange);text-decoration:underline;}
+.hpill{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:3px 9px;border-radius:12px;margin-top:9px;}
+.h24{background:var(--green-lt);color:var(--green);border:1px solid #90C8A0;}
+.hltd{background:var(--yellow-pale);color:#7A5A00;border:1px solid #DDB810;}
+
+/* ── ADMIN PANEL ── */
+.admin-gate{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:32px;max-width:420px;margin:40px auto;text-align:center;}
+.admin-gate h3{font-family:'Playfair Display',serif;font-size:20px;margin-bottom:8px;}
+.admin-gate p{font-size:13px;color:var(--muted);margin-bottom:20px;}
+.admin-input{width:100%;padding:10px 14px;border:1.5px solid var(--border-mid);border-radius:8px;font-family:'Nunito',sans-serif;font-size:14px;margin-bottom:12px;outline:none;}
+.admin-input:focus{border-color:var(--yellow-hover);}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:9px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:all .18s;}
+.btn-yellow{background:var(--yellow);color:var(--black);}
+.btn-yellow:hover{background:var(--yellow-hover);color:#fff;}
+.btn-red{background:var(--red);color:#fff;}
+.btn-red:hover{background:#901A10;}
+.btn-outline{background:transparent;border:1.5px solid var(--border-mid);color:var(--mid);}
+.btn-outline:hover{border-color:var(--yellow-hover);color:var(--black);}
+.btn-green{background:var(--green);color:#fff;}
+.btn-green:hover{background:#1A4A28;}
+.btn-sm{padding:6px 14px;font-size:12px;}
+
+.admin-panel{display:none;}
+.admin-panel.visible{display:block;}
+.admin-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px;}
+.admin-toolbar h3{font-family:'Playfair Display',serif;font-size:18px;flex:1;}
+
+.ngo-table{width:100%;border-collapse:collapse;background:var(--card);border-radius:var(--radius);overflow:hidden;border:1.5px solid var(--border);}
+.ngo-table th{background:var(--black);color:#fff;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:10px 14px;text-align:left;}
+.ngo-table td{padding:10px 14px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:top;}
+.ngo-table tr:last-child td{border-bottom:none;}
+.ngo-table tr:hover td{background:var(--yellow-pale);}
+.action-btns{display:flex;gap:6px;flex-wrap:wrap;}
+
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center;padding:20px;}
+.modal-bg.open{display:flex;}
+.modal{background:var(--card);border-radius:var(--radius);padding:28px;width:100%;max-width:620px;max-height:90vh;overflow-y:auto;position:relative;}
+.modal h3{font-family:'Playfair Display',serif;font-size:20px;margin-bottom:20px;padding-right:30px;}
+.modal-close{position:absolute;top:16px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted);}
+.modal-close:hover{color:var(--black);}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-full{grid-column:1/-1;}
+.form-group{display:flex;flex-direction:column;gap:5px;}
+.form-group label{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;}
+.form-group input,.form-group select,.form-group textarea{padding:9px 12px;border:1.5px solid var(--border-mid);border-radius:8px;font-family:'Nunito',sans-serif;font-size:13px;color:var(--black);background:var(--warm-white);outline:none;transition:border-color .2s;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--yellow-hover);}
+.form-group textarea{min-height:80px;resize:vertical;}
+.form-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;padding-top:16px;border-top:1px solid var(--border);}
+
+/* REPORT PAGE */
+.report-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:28px;max-width:680px;margin:0 auto;}
+.report-card h3{font-family:'Playfair Display',serif;font-size:20px;margin-bottom:6px;}
+.report-card p{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.65;}
+.steps{display:flex;flex-direction:column;gap:14px;margin-bottom:28px;}
+.step{display:flex;gap:14px;align-items:flex-start;padding:14px;background:var(--ivory);border-radius:10px;border:1px solid var(--border);}
+.step-num{width:32px;height:32px;border-radius:50%;background:var(--yellow);color:var(--black);font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.step-text h4{font-size:14px;font-weight:700;margin-bottom:3px;}
+.step-text p{font-size:13px;color:var(--mid);line-height:1.5;}
+.hotlines{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:24px;}
+.hotline{background:var(--red-lt);border:1.5px solid #F0B0A0;border-radius:10px;padding:14px;display:flex;align-items:center;gap:12px;}
+.hotline .ico{font-size:22px;}
+.hotline .hn{font-weight:700;font-size:14px;color:var(--red);}
+.hotline .hl{font-size:11px;color:var(--mid);}
+.injury-form .form-grid{margin-top:18px;}
+
+/* SUBMIT PAGE */
+.submit-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:28px;max-width:680px;margin:0 auto;}
+.submit-card h3{font-family:'Playfair Display',serif;font-size:20px;margin-bottom:6px;}
+.submit-card p{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.65;}
+.success-msg{display:none;background:var(--green-lt);border:1.5px solid #90C8A0;border-radius:10px;padding:16px 18px;font-size:14px;font-weight:600;color:var(--green);margin-top:14px;}
+.success-msg.show{display:block;}
+
+/* FOOTER */
+.dir-footer{background:var(--black);padding:26px 24px;text-align:center;border-top:3px solid var(--yellow);}
+.footer-brand{font-family:'Playfair Display',serif;font-size:16px;color:var(--yellow);margin-bottom:6px;}
+.footer-brand span{font-style:italic;}
+.footer-text{font-size:12px;color:rgba(255,255,255,.38);line-height:1.9;}
+.footer-text a{color:rgba(255,255,255,.55);text-decoration:none;}
+.footer-text a:hover{color:var(--yellow);}
+
+@media(max-width:640px){
+  .grid{grid-template-columns:1fr;}
+  .form-grid{grid-template-columns:1fr;}
+  .nav-tab{padding:12px 12px;font-size:12px;}
+  .estrip{flex-direction:column;}
+  .ngo-table{font-size:12px;}
+  .ngo-table th,.ngo-table td{padding:8px 10px;}
+}
+</style>
+</head>
+<body>
+
+
+<!-- SIMPLE FUREVER MEALS HERO -->
+<section class="fm-hero">
+  <div class="hero-content">
+    <div class="hero-logo">🐾</div>
+    <div class="hero-badge">FUREVER MEALS RESOURCE CENTER</div>
+    <h1>Animal Welfare NGO Directory</h1>
+    <p>
+      Find trusted animal welfare organizations, rescue groups, shelters,
+      bird rescue teams, wildlife rescuers and emergency helplines across
+      Mumbai, Navi Mumbai, Thane and beyond.
+    </p>
+    <div class="hero-search">
+      <input type="text" id="heroSearch"
+      placeholder="Search NGOs, locations, services..."
+      oninput="document.getElementById('searchInput').value=this.value; renderDir();"/>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ EMERGENCY STRIP ═══════════════════════════════════════════════════ -->
+<div class="estrip">
+  <div class="elabel">🚨 Animal Emergency?</div>
+  <div class="enums">
+    <div class="enum" onclick="window.location='tel:7666680202'"><span class="en">7666680202</span><span class="el">RAWW 24×7</span></div>
+    <div class="enum" onclick="window.location='tel:8767612344'"><span class="en">8767612344</span><span class="el">Thane SPCA</span></div>
+    <div class="enum" onclick="window.location='tel:9082353277'"><span class="en">9082353277</span><span class="el">Wildlife Rehab</span></div>
+    <div class="enum" onclick="window.location='tel:8104998550'"><span class="en">8104998550</span><span class="el">Dhyan (Large Animals)</span></div>
+    <div class="enum" onclick="window.location='tel:8655370005'"><span class="en">8655370005</span><span class="el">Bird Helpline</span></div>
+  </div>
+</div>
+
+<!-- ═══ NAV TABS ════════════════════════════════════════════════════════ -->
+<div class="nav-tabs">
+  <div class="nav-inner">
+    <button class="nav-tab active" onclick="showPage('directory',this)">🗂 NGO Directory</button>
+    <button class="nav-tab" onclick="showPage('report',this)">🐾 Report Injured Animal</button>
+    <button class="nav-tab" onclick="showPage('submit',this)">➕ Submit an NGO</button>
+    <button class="nav-tab" onclick="showPage('admin',this)">🔒 Manage Listings</button>
+  </div>
+</div>
+
+<!-- ═══ PAGE: DIRECTORY ══════════════════════════════════════════════════ -->
+<div id="page-directory" class="page active">
+  <div class="section-hd">
+    <h2>Find Animal Welfare NGOs Near You</h2>
+    <p>Search and filter by area, animal type, or availability. Click any phone number to call directly.</p>
+  </div>
+
+  <div class="filter-bar">
+    <div class="filter-group" style="flex:2;min-width:200px;">
+      <label>Search</label>
+      <input type="text" id="searchInput" placeholder="Name, area, service…" oninput="renderDir()"/>
+    </div>
+    <div class="filter-group">
+      <label>Animal Type</label>
+      <select id="animalFilter" onchange="renderDir()">
+        <option value="all">All Animals</option>
+        <option value="dog">🐕 Dogs</option>
+        <option value="cat">🐱 Cats</option>
+        <option value="bird">🐦 Birds</option>
+        <option value="wildlife">🦜 Wildlife</option>
+        <option value="reptile">🦎 Reptiles / Snakes</option>
+        <option value="large">🐄 Large Animals</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Region</label>
+      <div class="pills">
+        <button class="pill active"  onclick="setRF('all',this)">All</button>
+        <button class="pill"         onclick="setRF('Mumbai',this)">Mumbai</button>
+        <button class="pill"         onclick="setRF('Navi Mumbai',this)">Navi Mumbai</button>
+        <button class="pill"         onclick="setRF('Thane',this)">Thane</button>
+        <button class="pill"         onclick="setRF('Extended',this)">Vasai / Virar</button>
+        <button class="pill pemg"    onclick="setRF('24x7',this)">🚨 24×7 Only</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="rbar" id="rbar"></div>
+  <div id="dirContent"></div>
+</div>
+
+<!-- ═══ PAGE: REPORT INJURED ANIMAL ════════════════════════════════════ -->
+<div id="page-report" class="page">
+  <div class="section-hd">
+    <h2>Report an Injured Animal</h2>
+    <p>Found an injured, sick or distressed animal? Follow these steps to get help fast.</p>
+  </div>
+
+  <div class="report-card">
+    <h3>🐾 What to Do Right Now</h3>
+    <p>Stay calm. Your quick action can save a life. Follow these steps in order.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text">
+          <h4>Don't move the animal unless it's in immediate danger</h4>
+          <p>Moving an injured animal incorrectly can worsen internal injuries. Keep people and dogs away to reduce stress on the animal.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text">
+          <h4>Identify your location precisely</h4>
+          <p>Note the nearest landmark, building name, and road name. Drop a pin on Google Maps and be ready to share it.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text">
+          <h4>Call the right NGO for your area</h4>
+          <p>Use the emergency numbers below or go to the NGO Directory tab to find your area's rescue team.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-text">
+          <h4>While waiting — provide shade & water if safe</h4>
+          <p>Keep a bowl of water nearby if possible. Don't force-feed or give human medicines. Stay with the animal so rescue team can locate it.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-text">
+          <h4>Submit a report below so we can track & follow up</h4>
+          <p>Furever Meals tracks reports to connect you with the right help and follow up on the animal's condition.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="margin-bottom:14px;">📞 Emergency Rescue Numbers</h3>
+    <div class="hotlines">
+      <div class="hotline"><span class="ico">🦎</span><div><div class="hn">7666680202</div><div class="hl">RAWW — Wildlife 24×7</div></div></div>
+      <div class="hotline"><span class="ico">🏥</span><div><div class="hn">8767612344</div><div class="hl">Thane SPCA</div></div></div>
+      <div class="hotline"><span class="ico">🦅</span><div><div class="hn">9082353277</div><div class="hl">Wildlife Rehab Trust 24×7</div></div></div>
+      <div class="hotline"><span class="ico">🐄</span><div><div class="hn">8104998550</div><div class="hl">Dhyan Foundation (Large Animals)</div></div></div>
+      <div class="hotline"><span class="ico">🐦</span><div><div class="hn">8655370005</div><div class="hl">Bird Helpline Mumbai</div></div></div>
+      <div class="hotline"><span class="ico">🐕</span><div><div class="hn">9372787750</div><div class="hl">BSPCA 24×7 Vet</div></div></div>
+    </div>
+
+    <h3 style="margin-bottom:6px;">📋 Submit an Incident Report</h3>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:0;">Fill this in so we can track the case and follow up with the rescuing NGO.</p>
+    <div class="injury-form">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" id="rep_name" placeholder="Full name"/>
+        </div>
+        <div class="form-group">
+          <label>Your Phone</label>
+          <input type="tel" id="rep_phone" placeholder="+91 XXXXXXXXXX"/>
+        </div>
+        <div class="form-group">
+          <label>Animal Type</label>
+          <select id="rep_animal">
+            <option>Dog</option><option>Cat</option><option>Bird</option>
+            <option>Wildlife</option><option>Reptile / Snake</option>
+            <option>Large Animal (Cow/Horse)</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Condition</label>
+          <select id="rep_condition">
+            <option>Injured / Bleeding</option>
+            <option>Hit by vehicle</option>
+            <option>Sick / Unable to move</option>
+            <option>Trapped / Stuck</option>
+            <option>Maggot wound</option>
+            <option>Abandoned / Newborn</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group form-full">
+          <label>Exact Location</label>
+          <input type="text" id="rep_location" placeholder="Building name, road, landmark, area, city"/>
+        </div>
+        <div class="form-group form-full">
+          <label>Google Maps Link (optional)</label>
+          <input type="url" id="rep_maps" placeholder="Paste your location link here"/>
+        </div>
+        <div class="form-group form-full">
+          <label>Additional Details</label>
+          <textarea id="rep_details" placeholder="Describe what you see — injuries, approximate size, time since you found it…"></textarea>
+        </div>
+        <div class="form-group form-full">
+          <label>NGO Called (if any)</label>
+          <input type="text" id="rep_ngo" placeholder="Which NGO did you contact?"/>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-red" onclick="submitReport()">🐾 Submit Report</button>
+      </div>
+      <div class="success-msg" id="reportSuccess">✅ Report submitted! We'll follow up within a few hours. Thank you for helping this animal.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE: SUBMIT NGO ════════════════════════════════════════════════ -->
+<div id="page-submit" class="page">
+  <div class="section-hd">
+    <h2>Know an NGO We're Missing?</h2>
+    <p>Help us make this directory more complete. Submit the details and our team will verify and add it.</p>
+  </div>
+
+  <div class="submit-card">
+    <h3>➕ Suggest an NGO Listing</h3>
+    <p>Please fill in as much detail as you know. Our team will verify the information before publishing.</p>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>NGO Name *</label>
+        <input type="text" id="sub_name" placeholder="Full official name"/>
+      </div>
+      <div class="form-group">
+        <label>Region *</label>
+        <select id="sub_region">
+          <option value="">Select region…</option>
+          <option>Mumbai</option>
+          <option>Navi Mumbai</option>
+          <option>Thane</option>
+          <option>Extended (Vasai/Virar/Kalyan)</option>
+        </select>
+      </div>
+      <div class="form-group form-full">
+        <label>Areas Covered *</label>
+        <input type="text" id="sub_areas" placeholder="e.g. Bandra, Khar, Santacruz West"/>
+      </div>
+      <div class="form-group">
+        <label>Phone Number(s) *</label>
+        <input type="text" id="sub_phone" placeholder="Separate multiple with commas"/>
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="sub_email" placeholder="contact@ngo.org"/>
+      </div>
+      <div class="form-group form-full">
+        <label>Website</label>
+        <input type="url" id="sub_website" placeholder="https://"/>
+      </div>
+      <div class="form-group form-full">
+        <label>Services Provided *</label>
+        <input type="text" id="sub_services" placeholder="e.g. Rescue, Sterilisation, Shelter, Wildlife, Birds"/>
+      </div>
+      <div class="form-group">
+        <label>Animals Treated</label>
+        <input type="text" id="sub_animals" placeholder="Dogs, Cats, Birds, Wildlife…"/>
+      </div>
+      <div class="form-group">
+        <label>Operating Hours</label>
+        <input type="text" id="sub_hours" placeholder="e.g. 10am–6pm Mon–Sat / 24×7"/>
+      </div>
+      <div class="form-group form-full">
+        <label>Address</label>
+        <input type="text" id="sub_address" placeholder="Full address"/>
+      </div>
+      <div class="form-group form-full">
+        <label>Any Charges / Notes</label>
+        <textarea id="sub_notes" placeholder="Mention if treatment is free, any charges, restrictions (e.g. no night admissions)…"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" id="sub_yourname" placeholder="Your name"/>
+      </div>
+      <div class="form-group">
+        <label>Your Contact</label>
+        <input type="text" id="sub_yourcontact" placeholder="Phone or email"/>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-yellow" onclick="submitNGO()">Submit for Review</button>
+    </div>
+    <div class="success-msg" id="submitSuccess">✅ Thank you! We've received your submission. Our team will verify and add the NGO within 2–3 days.</div>
+  </div>
+</div>
+
+<!-- ═══ PAGE: ADMIN / MANAGE LISTINGS ══════════════════════════════════ -->
+<div id="page-admin" class="page">
+  <!-- Login gate -->
+  <div id="adminGate" class="admin-gate">
+    <h3>🔒 Manage Listings</h3>
+    <p>This section is for the Furever Meals team only. Enter your admin password to continue.</p>
+    <input type="password" class="admin-input" id="adminPass" placeholder="Admin password" onkeydown="if(event.key==='Enter')checkAdmin()"/>
+    <br/>
+    <button class="btn btn-yellow" onclick="checkAdmin()">Unlock Panel</button>
+    <p style="font-size:11px;color:var(--muted);margin-top:12px;">Contact support@furevermeals.org to reset your password.</p>
+  </div>
+
+  <!-- Admin panel -->
+  <div id="adminPanel" class="admin-panel">
+    <div class="admin-toolbar">
+      <h3>📋 Manage NGO Listings</h3>
+      <button class="btn btn-yellow btn-sm" onclick="openAddModal()">+ Add New NGO</button>
+      <button class="btn btn-outline btn-sm" onclick="exportCSV()">⬇ Export CSV</button>
+      <button class="btn btn-outline btn-sm" onclick="lockAdmin()">🔒 Lock</button>
+    </div>
+
+    <!-- Submissions inbox -->
+    <div style="background:var(--yellow-pale);border:1.5px solid #DDB810;border-radius:10px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px;">
+      <span style="font-size:20px">📬</span>
+      <div>
+        <div style="font-weight:700;font-size:14px;">New NGO Submissions</div>
+        <div style="font-size:12px;color:var(--mid);" id="submissionNote">Check <strong>support@furevermeals.org</strong> for public submissions. Use the button below to manually add verified NGOs.</div>
+      </div>
+    </div>
+
+    <div style="overflow-x:auto;">
+    <table class="ngo-table" id="adminTable">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Region</th>
+          <th>Phone</th>
+          <th>Hours</th>
+          <th>24×7</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="adminTbody"></tbody>
+    </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ADD / EDIT MODAL ════════════════════════════════════════════════ -->
+<div class="modal-bg" id="ngoModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h3 id="modalTitle">Add New NGO</h3>
+    <input type="hidden" id="editIndex" value="-1"/>
+    <div class="form-grid">
+      <div class="form-group form-full">
+        <label>NGO Name *</label>
+        <input type="text" id="m_name" placeholder="Full name"/>
+      </div>
+      <div class="form-group">
+        <label>Region *</label>
+        <select id="m_region">
+          <option value="Mumbai">Mumbai</option>
+          <option value="Navi Mumbai">Navi Mumbai</option>
+          <option value="Thane">Thane</option>
+          <option value="Extended">Extended (Vasai/Virar/Kalyan)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Icon</label>
+        <select id="m_ico">
+          <option>🐾</option><option>🏥</option><option>🐕</option><option>🐱</option>
+          <option>🐦</option><option>🦜</option><option>🦎</option><option>🐍</option>
+          <option>🚑</option><option>🌿</option><option>❤️</option><option>🏠</option>
+          <option>✊</option><option>🦅</option><option>🕊️</option><option>💉</option>
+          <option>🌾</option><option>🤝</option><option>🍖</option>
+        </select>
+      </div>
+      <div class="form-group form-full">
+        <label>Areas Covered</label>
+        <input type="text" id="m_area" placeholder="e.g. Bandra · Khar · Santacruz"/>
+      </div>
+      <div class="form-group form-full">
+        <label>Services (comma-separated)</label>
+        <input type="text" id="m_services" placeholder="Rescue, Shelter, Adoption, Sterilisation"/>
+      </div>
+      <div class="form-group form-full">
+        <label>Animal Types (comma-separated)</label>
+        <input type="text" id="m_animals" placeholder="dog, cat, bird, wildlife, reptile, large"/>
+      </div>
+      <div class="form-group form-full">
+        <label>Phone Numbers (comma-separated)</label>
+        <input type="text" id="m_phone" placeholder="9876543210, 022-12345678"/>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="m_email" placeholder="contact@ngo.org"/>
+      </div>
+      <div class="form-group">
+        <label>Website</label>
+        <input type="url" id="m_website" placeholder="https://"/>
+      </div>
+      <div class="form-group">
+        <label>Operating Hours</label>
+        <input type="text" id="m_hours" placeholder="10am–6pm, Mon–Sat"/>
+      </div>
+      <div class="form-group" style="display:flex;align-items:center;gap:10px;padding-top:18px;">
+        <input type="checkbox" id="m_emg" style="width:18px;height:18px;accent-color:var(--yellow);"/>
+        <label style="font-size:13px;font-weight:600;text-transform:none;letter-spacing:0;">24×7 Emergency</label>
+      </div>
+      <div class="form-group form-full">
+        <label>Notes / Charges</label>
+        <textarea id="m_note" placeholder="Any charges, restrictions, address details…"></textarea>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-green" onclick="saveNGO()">Save NGO</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ FOOTER ═══════════════════════════════════════════════════════════ -->
+<div class="dir-footer">
+  <div class="footer-brand">🐾 Furever <span>Meals</span></div>
+  <div class="footer-text">
+    Together, we can feed more — and help more.<br>
+    Contact details may change. Always verify before visiting an NGO.<br>
+    To suggest a listing → <a href="mailto:support@furevermeals.org">support@furevermeals.org</a>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════
+// NGO DATA — edit this array to manage listings, or use the Admin panel
+// ═══════════════════════════════════════════════════════════════════════
+const STORAGE_KEY = 'fms_ngos_v2';
+
+const DEFAULT_NGOS = [
+  { name:"Bombay SPCA (BSPCA)", region:"Mumbai", area:"Parel — All Mumbai", ico:"🏥", icoC:"gi", services:["Hospital","Rescue","Adoption","Sterilisation","Crematorium"], animals:["dog","cat","wildlife","large"], phone:["9372787750","8591659398","8369882992"], email:"", website:"https://bombayspca.org", hours:"24×7 Vet · OPD 9am–12pm", emg:true, note:"Admits any animal anytime. Sterilisations for dogs & cats. Freezer ₹1500/day. Post-mortem available." },
+  { name:"All India Animal Welfare Association (AIAWA)", region:"Mumbai", area:"Mahalaxmi (East)", ico:"💉", icoC:"bi", services:["ABC","Vaccination","Surgery","Anti-Rabies"], animals:["dog","cat"], phone:["022-23094077"], email:"", website:"", hours:"Mon–Sat", emg:false, note:"Dr. E Moses Road, Dhobi Ghat, Mahalaxmi." },
+  { name:"Animals Matter to Me (AMTM)", region:"Mumbai", area:"Malad West (Madh–Marve Rd)", ico:"🐾", icoC:"", services:["Hospital","Shelter","Adoption","Sterilisation","Ambulance"], animals:["dog","cat"], phone:["9920737737","7867911911"], email:"", website:"", hours:"12:30pm–5:30pm daily", emg:false, note:"CTS 166/167 Ashram, Madh–Marve Rd, Malad West." },
+  { name:"RAWW – Resqink Assoc. for Wildlife Welfare", region:"Mumbai", area:"Mumbai · Thane · Navi Mumbai", ico:"🦎", icoC:"oi", services:["Wildlife Rescue","Reptiles","Exotic Animals","Ambulance"], animals:["wildlife","reptile"], phone:["7666680202"], email:"", website:"https://www.raww.in", hours:"11am–5:30pm (Emergency 24×7)", emg:true, note:"25 trained rescuers across Mulund, Chembur, Palghar & Thane." },
+  { name:"YODA – Youth Org. in Defence of Animals", region:"Mumbai", area:"Khar West", ico:"🐾", icoC:"pi", services:["Rescue","Rehabilitation","Adoption","Awareness"], animals:["dog","cat"], phone:["8899997704"], email:"", website:"", hours:"10am–7pm", emg:false, note:"Pragati Bungalow, 3rd Road, Khar West." },
+  { name:"Welfare of Stray Dogs (WSD)", region:"Mumbai", area:"Colaba to Sion", ico:"🐕", icoC:"bi", services:["On-road Treatment","Sterilisation","Rabies Vaccination"], animals:["dog"], phone:["8976022838"], email:"", website:"", hours:"9am–5pm, 7 days", emg:false, note:"Covers Colaba, Dadar, Parel, Lower Parel, Worli, Mahim, Byculla, Sion." },
+  { name:"HAB – Help Animals & Birds", region:"Mumbai", area:"Colaba to Dadar", ico:"🕊️", icoC:"bi", services:["Rescue","Rehabilitation","Cat Sterilisation","Surgery"], animals:["dog","cat","bird"], phone:["9223333338","9322333338","9892333338"], email:"", website:"", hours:"10am–7pm, 7 days", emg:false, note:"₹800 admission fee. Rehab centre at Masjid Bandar East." },
+  { name:"Dhyan Foundation Animal Ambulance", region:"Mumbai", area:"All Maharashtra (Large Animals)", ico:"🚑", icoC:"oi", services:["Large Animal Ambulance","Cattle Rescue","Horse & Donkey"], animals:["large"], phone:["8104998550","8104996876"], email:"", website:"", hours:"9am–6pm, 7 days", emg:true, note:"Hydraulic vehicle for large animals. Fuel charges applicable." },
+  { name:"Save Our Strays", region:"Mumbai", area:"Bandra to Dahisar (E & W)", ico:"🐕", icoC:"", services:["Sterilisation (Dogs)","Sterilisation (Cats)"], animals:["dog","cat"], phone:["9820141310"], email:"", website:"", hours:"4 days/wk dogs, 2 days/wk cats", emg:false, note:"26/101 Garden View Bldg, Oshiwara, Andheri West." },
+  { name:"Save Birds – Free Treatment Centre", region:"Mumbai", area:"Kandivali & Malad", ico:"🐦", icoC:"bi", services:["Bird Rescue","Bird Treatment","Rehabilitation"], animals:["bird"], phone:["8451899899"], email:"", website:"", hours:"10am–6pm, 7 days", emg:false, note:"Kandivali Mukta Baug Jain Hospital, opp. RTO Office, Malad West. Birds only." },
+  { name:"Save Birds Kandivali (24×7)", region:"Mumbai", area:"Kandivali (East & West)", ico:"🦜", icoC:"bi", services:["Bird Rescue","Bat Rescue","24×7 Helpline"], animals:["bird"], phone:["8828879490","8451899899"], email:"", website:"", hours:"10am–7pm (24×7 helpline)", emg:true, note:"Includes bat rescue. No pickup/drop; guidance provided." },
+  { name:"Bird Helpline Mumbai (BHL)", region:"Mumbai", area:"Bandra & surrounds", ico:"🐦", icoC:"bi", services:["Bird Rescue","Treatment"], animals:["bird"], phone:["8655370005","8655370006"], email:"", website:"", hours:"Daily", emg:true, note:"Free for all birds." },
+  { name:"Utkarsh Animal Hospital – Mulund", region:"Mumbai", area:"Mulund West", ico:"🏥", icoC:"gi", services:["Birds Treatment","Hospital"], animals:["bird"], phone:["8976925958","2225676000"], email:"", website:"", hours:"24×7", emg:true, note:"Minerva Industrial Estate, Mulund West. Birds ₹300 charged. No shelter." },
+  { name:"Wildlife Rehabilitation Trust", region:"Mumbai", area:"All Maharashtra", ico:"🦅", icoC:"oi", services:["Wildlife Rescue","Treatment","Relocation"], animals:["wildlife"], phone:["9082353277"], email:"", website:"", hours:"24×7, 7 days", emg:true, note:"Phase-II, Farid Estate, Kandivali East. Charges depend on case." },
+  { name:"Jeevdaya Mangal Vardhini", region:"Mumbai", area:"Ghatkopar East", ico:"🕊️", icoC:"bi", services:["Wildlife Rescue","Bird Rescue"], animals:["bird","wildlife"], phone:["8655252573"], email:"", website:"", hours:"Daily", emg:false, note:"Gala 59, Vallabh Society, 90 Feet Road, Ghatkopar East." },
+  { name:"Vardhaman Sanskar – Animal Ambulance", region:"Mumbai", area:"Mumbai only", ico:"🚑", icoC:"oi", services:["Ambulance","Domestic Animals","Free"], animals:["dog","cat"], phone:["2225069191"], email:"", website:"", hours:"9:30am–6pm, 7 days", emg:false, note:"Pant Nagar, Ghatkopar East. Free ambulance for domestic animals." },
+  { name:"Vardhaman Sanskar (On-road treatment)", region:"Mumbai", area:"Goregaon · Kandivali · Malad (E&W)", ico:"🐾", icoC:"", services:["On-road Treatment","Dogs & Cats"], animals:["dog","cat"], phone:["9930106106"], email:"", website:"", hours:"10am–7pm, Mon–Sat", emg:false, note:"Free on-road treatment." },
+  { name:"World For All – Animal Rescue", region:"Mumbai", area:"Andheri E · Powai · Jogeshwari · Goregaon · Juhu", ico:"🐕", icoC:"", services:["On-road Treatment","Dogs & Cats"], animals:["dog","cat"], phone:["9820001506"], email:"", website:"", hours:"8am–5pm, Mon–Sat", emg:false, note:"East only. Free on-road treatment." },
+  { name:"World For All – Rescue & Adoptions", region:"Mumbai", area:"Andheri East", ico:"🐾", icoC:"pi", services:["Rescue","Adoption","Medical Support"], animals:["dog","cat"], phone:["9960304595","9004257179"], email:"", website:"", hours:"Mon–Sat", emg:false, note:"" },
+  { name:"Awaaz", region:"Mumbai", area:"Andheri · Jogeshwari · Vile Parla · Goregaon (East)", ico:"🐱", icoC:"pi", services:["Cat Sterilisation"], animals:["cat"], phone:["7900094345"], email:"", website:"", hours:"9am–5pm, Mon–Sat", emg:false, note:"Cat sterilisations only." },
+  { name:"SRLC", region:"Mumbai", area:"Andheri · Khar · Vile Parla · Sion · Bandra · Wadala (East)", ico:"🐾", icoC:"", services:["On-road Treatment"], animals:["dog","cat"], phone:["9822921100","7030159900"], email:"", website:"", hours:"10am–6pm, Mon–Sat", emg:false, note:"₹100 per case. East side only." },
+  { name:"ASHA – Association for Service & Healing of Animals", region:"Mumbai", area:"Andheri · Jogeshwari · Goregaon · Parla · Santacruz", ico:"❤️", icoC:"pi", services:["On-road Treatment","Hospital Admissions"], animals:["dog","cat"], phone:["9820127085"], email:"", website:"", hours:"10am–6pm, Mon–Sat", emg:false, note:"Caller pays ₹500 entry fee. Facilitates BSPCA/AHIMSA admission." },
+  { name:"SAARP Mumbai", region:"Mumbai", area:"All Mumbai · Thane · Palghar", ico:"🐍", icoC:"oi", services:["Reptile Rescue","Snake Relocation"], animals:["reptile"], phone:["9821134056","8108902286"], email:"", website:"", hours:"10am–6pm Mon–Sat (24×7 helpline)", emg:true, note:"Free reptile rescue across Mumbai, Thane & Palghar." },
+  { name:"Jivdaya Abhiyan", region:"Mumbai", area:"Malad & Goregaon (East)", ico:"🐾", icoC:"", services:["Animal Welfare","Rescue"], animals:["dog","cat"], phone:["8828261212"], email:"", website:"", hours:"Daily", emg:false, note:"" },
+  { name:"Udaan – Bird Rescue", region:"Mumbai", area:"Malad West", ico:"🐦", icoC:"bi", services:["Bird Rescue (Stuck/Hanging)"], animals:["bird"], phone:["8898101015"], email:"", website:"", hours:"10am–7pm, all days", emg:false, note:"Free rescue for birds stuck or hanging. Malad only." },
+  { name:"Samkit Yuvak Mandal – Andheri", region:"Mumbai", area:"Andheri", ico:"🐦", icoC:"bi", services:["Bird Camps","Welfare"], animals:["bird"], phone:["9820997699"], email:"", website:"", hours:"Daily", emg:false, note:"" },
+  { name:"Samkit Yuvak Mandal – Borivali & Dahisar", region:"Mumbai", area:"Borivali & Dahisar", ico:"🐦", icoC:"bi", services:["Bird Camps","Welfare"], animals:["bird"], phone:["9324747555","8080000804"], email:"", website:"", hours:"Daily", emg:false, note:"" },
+  { name:"Raksha Animal Welfare Center", region:"Mumbai", area:"Lower Parel", ico:"🐾", icoC:"gi", services:["Animal Welfare","Treatment"], animals:["dog","cat"], phone:["9082198551"], email:"", website:"", hours:"2pm–4pm, Sun–Fri", emg:false, note:"Laxmi Woollen Mill Estate, Shakti Mills Lane." },
+  { name:"Helping Hands Animal Welfare Foundation", region:"Mumbai", area:"Sion West", ico:"🤝", icoC:"gi", services:["Animal Welfare","Rescue"], animals:["dog","cat"], phone:["8850285889"], email:"", website:"", hours:"All days", emg:false, note:"" },
+  { name:"WeLove Animals Foundation", region:"Mumbai", area:"Lower Parel", ico:"❤️", icoC:"pi", services:["Coordination","Rescue Support"], animals:["dog","cat","bird","wildlife"], phone:["7506609954"], email:"", website:"https://www.weloveanimals.foundation", hours:"Daily", emg:false, note:"Shah & Nahar Industrial Estate, Lower Parel." },
+  { name:"Sherry and Diya Foundation", region:"Mumbai", area:"Kamathipura / Mumbai Central", ico:"🐾", icoC:"pi", services:["Animal Welfare","Rescue"], animals:["dog","cat"], phone:["1800 123 1137"], email:"", website:"", hours:"9am–10pm, Mon–Sat", emg:false, note:"Near Pujari Building, Navjeevan Society, Kamathipura." },
+  { name:"All About Them Foundation", region:"Mumbai", area:"Worli Naka", ico:"🏥", icoC:"gi", services:["Hospital","Rescue","Adoption"], animals:["dog","cat"], phone:["9136782348"], email:"", website:"", hours:"Daily", emg:false, note:"15, Dr Elijah Moses Rd, beside Furniturewala, Worli Naka." },
+  { name:"The Feline Foundation", region:"Mumbai", area:"Versova / Andheri West", ico:"🐱", icoC:"pi", services:["Cat Rescue","Rehabilitation","Medical Care"], animals:["cat"], phone:["9324524373"], email:"", website:"", hours:"Daily", emg:false, note:"Bungalow 104, Aram Nagar Part 2, Versova." },
+  { name:"Animal Rescue and Care (ARAC)", region:"Mumbai", area:"Kandivali East", ico:"🐾", icoC:"", services:["Rescue","Adoption","Medical Support"], animals:["dog","cat"], phone:["9920722633"], email:"", website:"", hours:"Daily", emg:false, note:"Thakur Village, Kandivali East." },
+  { name:"Karuna NGO Night Ambulance", region:"Mumbai", area:"Goregaon to Bhayandar (Night)", ico:"🚑", icoC:"oi", services:["Night Ambulance","On-road Treatment"], animals:["dog","cat"], phone:["9920299533","9833625427","02228761313"], email:"", website:"", hours:"9:30am–6pm + Night coverage", emg:true, note:"" },
+  // NAVI MUMBAI
+  { name:"Bhumi Jeevdaya Samvardhan Trust", region:"Navi Mumbai", area:"Airoli · Ghansoli · Vashi · Turbhe · Nerul · Belapur · Kharghar · Panvel", ico:"🌿", icoC:"gi", services:["Spot Treatment","Shelter","Admission","On-road Team","Wildlife"], animals:["dog","cat","wildlife","large"], phone:["8424004484"], email:"bhumijeevdayanm@gmail.com", website:"https://bhumijeevdaya.org", hours:"10am–6pm, Mon–Sat", emg:false, note:"1st Floor, Plot 71, Near Janta Market, Sector 23, Turbhe. Founded 2014; treated 25,000+ animals." },
+  { name:"Reptiles and Aves Rescue", region:"Navi Mumbai", area:"All Navi Mumbai", ico:"🦎", icoC:"oi", services:["Reptile Rescue","Owl Rescue","Bird Rescue","Relocation"], animals:["reptile","bird","wildlife"], phone:["9987970640"], email:"", website:"", hours:"24×7, 7 days", emg:true, note:"Juhu Gaon, Juinagar. Free rescue and relocation." },
+  { name:"IDA – In Defense of Animals (Panvel)", region:"Navi Mumbai", area:"Panvel · Kalamboli · Kharghar · Taloja · Ulave", ico:"🐕", icoC:"gi", services:["Rescue","OPD","Sterilisation"], animals:["dog","cat"], phone:["9320056589"], email:"info@idaindia.org", website:"https://www.idaindia.org", hours:"9am–5pm (No night admissions)", emg:false, note:"Sector 15, New Panvel East. Panvel pickup only; no mobile van." },
+  { name:"IDA – In Defense of Animals (Turbhe)", region:"Navi Mumbai", area:"Belapur · Nerul · Vashi · Turbhe · Koparkhairane · Ghansoli · Airoli · Rabale", ico:"🐕", icoC:"gi", services:["Rescue","Sterilisation","Night Van","OPD"], animals:["dog","cat"], phone:["9320056585"], email:"info@idaindia.org", website:"https://www.idaindia.org", hours:"Day + Night Service", emg:true, note:"Inside Sanjivani Construction gate, near Lubrizol Company, Turbhe Naka." },
+  { name:"Apna Home Animal Shelter", region:"Navi Mumbai", area:"All Navi Mumbai", ico:"🏠", icoC:"pi", services:["Shelter (Strays — Free)","Shelter (Pets — Nominal)","Spot Treatment","Video Consultation"], animals:["dog","cat"], phone:["9322191638"], email:"", website:"", hours:"24×7, 7 days", emg:true, note:"Siddhi Karavale, Kharghar. Strays free; pets at nominal cost." },
+  { name:"Feed The Dogs", region:"Navi Mumbai", area:"Nerul, Navi Mumbai", ico:"🍖", icoC:"", services:["Feeding","Animal Welfare"], animals:["dog"], phone:["9004175141"], email:"", website:"", hours:"Daily", emg:false, note:"8A, Lane 2, Nandanvan Society, Sector 17, Nerul." },
+  { name:"Snake Catcher / Serpamitra", region:"Navi Mumbai", area:"Rabale & Navi Mumbai", ico:"🐍", icoC:"oi", services:["Snake Rescue","Reptile Rescue"], animals:["reptile"], phone:["7900080011"], email:"", website:"", hours:"All days", emg:true, note:"Room 1010, Ashwini Nagar, Rabale MIDC Rd." },
+  // THANE
+  { name:"Thane SPCA", region:"Thane", area:"Thane District (incl. Raigad & Palghar)", ico:"🏥", icoC:"gi", services:["Dogs & Cats Only","Spot Treatment","IPD / OPD","Hospital"], animals:["dog","cat"], phone:["8767612344"], email:"", website:"", hours:"9:30am–6pm, 7 days (Hospital 24×7)", emg:true, note:"N.K.T Compound, Kolshet Road, Azad Nagar, Thane West. ₹400/case spot treatment." },
+  { name:"Animal Care and Welfare Trust", region:"Thane", area:"Thane", ico:"🏥", icoC:"gi", services:["Animal Care","Welfare","Treatment"], animals:["dog","cat"], phone:["8108200184"], email:"", website:"", hours:"10:30am–9:30pm, all days", emg:false, note:"Kopari, Anand Nagar Rd, Thane." },
+  { name:"Wildlife Welfare Association (WWA)", region:"Thane", area:"Mumbai · Navi Mumbai · Thane", ico:"🦜", icoC:"oi", services:["Wildlife Rescue","Relocation","Treatment"], animals:["wildlife"], phone:["9757322901"], email:"", website:"", hours:"24×7, 7 days", emg:true, note:"Plot 384, New Mhadha Colony, Vartak Nagar, Thane West. Free service." },
+  { name:"Freedom Farm – Citizens for Animal Protection", region:"Thane", area:"Thane East & West", ico:"🌾", icoC:"gi", services:["Spot Treatment","Rescue","Emergency Shelter"], animals:["dog","cat","large"], phone:["9324610601"], email:"", website:"", hours:"9am–6pm, 7 days", emg:false, note:"Unnathi Woods Rd, Vijay Park, Kasarvadavali, Thane West. Free." },
+  { name:"PALS", region:"Thane", area:"Thane City (East & West)", ico:"🐾", icoC:"", services:["On-road Treatment","Ambulance"], animals:["dog","cat"], phone:["9324699829"], email:"", website:"", hours:"12pm–8pm, Thu–Tue", emg:false, note:"Treatment free; medicines chargeable. Ambulance ₹100. No shelter." },
+  { name:"PAWS – Dombivali", region:"Thane", area:"Thakurli · Kalyan · Titwada · Shahad · Ambivli", ico:"🐾", icoC:"", services:["Ambulance","Hospital (Murbad)","On-road Treatment"], animals:["dog","cat"], phone:["9820161114"], email:"", website:"", hours:"12pm–3:30pm, Mon–Sat", emg:false, note:"Stray animals only. No domestic pets." },
+  { name:"MAWS – Mumbra Animal Welfare Society", region:"Thane", area:"Kalwa · Mumbra · Diwa", ico:"🐾", icoC:"", services:["Spot Treatment","Emergency Shelter","Domestic & Wildlife","OPS"], animals:["dog","cat","wildlife"], phone:["9619317118","9221280948"], email:"", website:"", hours:"10am–10pm, Sat–Thu", emg:false, note:"Mumbra. Free on-spot treatment and emergency shelter." },
+  { name:"NGO Shivalay Rudra Pratishthan Animal Trust", region:"Thane", area:"Dombivli", ico:"🐾", icoC:"pi", services:["Animal Welfare","Rescue","24×7"], animals:["dog","cat"], phone:["8451884868"], email:"", website:"", hours:"24×7, all days", emg:true, note:"Nilje Gaon, opp. Chandresh Godavari, Dombivli." },
+  { name:"Sharanam Animal Care and Rescue Center", region:"Thane", area:"Thane West", ico:"🏠", icoC:"pi", services:["Rescue","Animal Care","Shelter"], animals:["dog","cat"], phone:["9136158595"], email:"", website:"", hours:"9am–11pm, all days", emg:false, note:"Koliwada, Thane West. Private rescue center." },
+  { name:"Hands That Heal Animal Care Foundation", region:"Thane", area:"Karnala / Panvel outskirts", ico:"🤝", icoC:"gi", services:["Animal Care","Rescue","Rehabilitation"], animals:["dog","cat","wildlife"], phone:["7718982119"], email:"", website:"", hours:"Daily", emg:false, note:"Farm House, 79, Kalle Road, Karnala." },
+  // EXTENDED
+  { name:"AHINSA Charitable Trust", region:"Extended", area:"Mira Road & Bhayandar (West only)", ico:"🐾", icoC:"", services:["On-road Treatment","Dogs","Cats","Birds"], animals:["dog","cat","bird"], phone:["9821391283"], email:"", website:"", hours:"9am–6pm, Mon–Sat", emg:false, note:"Free on-road treatment." },
+  { name:"Karuna Trust Virar", region:"Extended", area:"Virar to Naigaon (East & West)", ico:"🐾", icoC:"gi", services:["On-road Treatment","All Animals"], animals:["dog","cat"], phone:["9273910004"], email:"", website:"", hours:"10am–6pm, 7 days", emg:false, note:"Free treatment, no shelter." },
+  { name:"Divya Jyot", region:"Extended", area:"Virar · Vasai · Nalasopara", ico:"🐾", icoC:"pi", services:["On-road Treatment"], animals:["dog","cat"], phone:["9320004343","9322004343"], email:"", website:"", hours:"11am–6pm", emg:false, note:"" },
+  { name:"Samkit Yuvak Mandal – Nalasopara", region:"Extended", area:"All Mumbai (occasional camps)", ico:"🐦", icoC:"bi", services:["Bird Camps","Free Camps"], animals:["bird"], phone:["8108543152"], email:"", website:"", hours:"Occasional camps", emg:false, note:"" },
+  { name:"Rescue Ambulance – Western Mumbai", region:"Extended", area:"Borivali · Virar · Vasai", ico:"🚑", icoC:"oi", services:["Ambulance","Rescue"], animals:["dog","cat"], phone:["9920499404","9619933223","7715012117"], email:"", website:"", hours:"Daily", emg:false, note:"Call for pickup coverage confirmation." },
+];
+
+// ─── STATE ────────────────────────────────────────────────────────────
+let ngos = loadNGOs();
+let activeRegion = 'all';
+const REGIONS = ['Mumbai','Navi Mumbai','Thane','Extended'];
+const RICONS  = {Mumbai:'🏙️','Navi Mumbai':'🌆',Thane:'🌳',Extended:'🛣️'};
+const RLABELS = {Mumbai:'Mumbai','Navi Mumbai':'Navi Mumbai',Thane:'Thane',Extended:'Vasai / Virar / Mira Road / Kalyan'};
+const ADMIN_PASS = 'fms2024';
+
+function loadNGOs(){
+  try{
+    const s = localStorage.getItem(STORAGE_KEY);
+    if(s) return JSON.parse(s);
+  }catch(e){}
+  return JSON.parse(JSON.stringify(DEFAULT_NGOS));
+}
+function saveNGOs(){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(ngos)); }catch(e){} }
+
+// ─── NAVIGATION ───────────────────────────────────────────────────────
+function showPage(id, btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(id==='admin') buildAdminTable();
+}
+
+// ─── DIRECTORY ────────────────────────────────────────────────────────
+function setRF(f, btn){
+  activeRegion = f;
+  document.querySelectorAll('.pills .pill').forEach(p=>p.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  renderDir();
+}
+function renderDir(){
+  const q  = (document.getElementById('searchInput').value||'').toLowerCase().trim();
+  const at = document.getElementById('animalFilter').value;
+  const filtered = ngos.filter(n=>{
+    const rOk = activeRegion==='all' || n.region===activeRegion || (activeRegion==='24x7' && n.emg);
+    const aOk = at==='all' || (n.animals && n.animals.includes(at));
+    const sOk = !q || n.name.toLowerCase().includes(q) || (n.area||'').toLowerCase().includes(q)
+              || (n.services||[]).some(s=>s.toLowerCase().includes(q))
+              || (n.note||'').toLowerCase().includes(q);
+    return rOk && aOk && sOk;
+  });
+  document.getElementById('rbar').textContent = `Showing ${filtered.length} organisation${filtered.length!==1?'s':''}`;
+  const regions = (activeRegion==='all'||activeRegion==='24x7') ? REGIONS : [activeRegion];
+  let html='';
+  regions.forEach(region=>{
+    const list = filtered.filter(n=>n.region===region);
+    if(!list.length) return;
+    html+=`<div class="region-block"><div class="region-head"><div class="region-title">${RICONS[region]} ${RLABELS[region]}</div><span class="rcount">${list.length} NGO${list.length>1?'s':''}</span></div><div class="grid">`;
+    list.forEach(n=>{
+      const phones = (n.phone||[]).map(p=>`<div class="cr"><span class="ci">📞</span><a href="tel:${p.replace(/[\s\-()]/g,'')}">${p}</a></div>`).join('');
+      const email  = n.email  ? `<div class="cr"><span class="ci">✉️</span><a href="mailto:${n.email}">${n.email}</a></div>` : '';
+      const web    = n.website? `<div class="cr"><span class="ci">🌐</span><a href="${n.website}" target="_blank">Visit Website</a></div>` : '';
+      const svcs   = (n.services||[]).map((s,i)=>`<span class="tag${i===0?' f':''}">${s}</span>`).join('');
+      const anTags = (n.animals||[]).map(a=>`<span class="tag ${a}">${{dog:'🐕 Dog',cat:'🐱 Cat',bird:'🐦 Bird',wildlife:'🦜 Wildlife',reptile:'🦎 Reptile',large:'🐄 Large Animal'}[a]||a}</span>`).join('');
+      const hC = (n.hours||'').includes('24')||(n.hours||'').toLowerCase().includes('night')?'h24':'hltd';
+      html+=`<div class="card${n.emg?' emg':''}"><div class="card-top"><div class="card-ico ${n.icoC||''}">${n.ico||'🐾'}</div><div><div class="card-name">${n.name}</div><div class="card-area">📍 ${n.area||''}</div></div></div><div class="tags">${svcs}${anTags}</div>${n.note?`<p class="card-note">${n.note}</p>`:''}<div class="contacts">${phones}${email}${web}<span class="hpill ${hC}">${hC==='h24'?'🟢':'🕐'} ${n.hours||''}</span></div></div>`;
+    });
+    html+=`</div></div>`;
+  });
+  if(!html) html=`<div class="grid"><div class="no-res">No organisations found — try a different filter.</div></div>`;
+  document.getElementById('dirContent').innerHTML=html;
+}
+
+// ─── ADMIN ────────────────────────────────────────────────────────────
+function checkAdmin(){
+  const p = document.getElementById('adminPass').value;
+  if(p===ADMIN_PASS){
+    document.getElementById('adminGate').style.display='none';
+    document.getElementById('adminPanel').classList.add('visible');
+    buildAdminTable();
+  } else {
+    document.getElementById('adminPass').style.borderColor='var(--red)';
+    document.getElementById('adminPass').value='';
+    document.getElementById('adminPass').placeholder='Incorrect password — try again';
+  }
+}
+function lockAdmin(){
+  document.getElementById('adminGate').style.display='';
+  document.getElementById('adminPanel').classList.remove('visible');
+  document.getElementById('adminPass').value='';
+}
+function buildAdminTable(){
+  const tb = document.getElementById('adminTbody');
+  if(!tb) return;
+  tb.innerHTML = ngos.map((n,i)=>`<tr>
+    <td>${i+1}</td>
+    <td><strong>${n.name}</strong></td>
+    <td>${n.region}</td>
+    <td>${(n.phone||[]).join('<br>')}</td>
+    <td style="white-space:nowrap;">${n.hours||''}</td>
+    <td style="text-align:center;">${n.emg?'✅':''}</td>
+    <td><div class="action-btns">
+      <button class="btn btn-yellow btn-sm" onclick="openEditModal(${i})">✏️ Edit</button>
+      <button class="btn btn-red btn-sm" onclick="deleteNGO(${i})">🗑 Del</button>
+    </div></td>
+  </tr>`).join('');
+}
+function deleteNGO(i){
+  if(!confirm(`Delete "${ngos[i].name}"?`)) return;
+  ngos.splice(i,1);
+  saveNGOs();
+  buildAdminTable();
+  renderDir();
+}
+function openAddModal(){
+  document.getElementById('modalTitle').textContent='Add New NGO';
+  document.getElementById('editIndex').value='-1';
+  ['m_name','m_area','m_services','m_animals','m_phone','m_email','m_website','m_hours','m_note'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('m_region').value='Mumbai';
+  document.getElementById('m_ico').value='🐾';
+  document.getElementById('m_emg').checked=false;
+  document.getElementById('ngoModal').classList.add('open');
+}
+function openEditModal(i){
+  const n = ngos[i];
+  document.getElementById('modalTitle').textContent='Edit NGO';
+  document.getElementById('editIndex').value=i;
+  document.getElementById('m_name').value=n.name||'';
+  document.getElementById('m_region').value=n.region||'Mumbai';
+  document.getElementById('m_ico').value=n.ico||'🐾';
+  document.getElementById('m_area').value=n.area||'';
+  document.getElementById('m_services').value=(n.services||[]).join(', ');
+  document.getElementById('m_animals').value=(n.animals||[]).join(', ');
+  document.getElementById('m_phone').value=(n.phone||[]).join(', ');
+  document.getElementById('m_email').value=n.email||'';
+  document.getElementById('m_website').value=n.website||'';
+  document.getElementById('m_hours').value=n.hours||'';
+  document.getElementById('m_emg').checked=!!n.emg;
+  document.getElementById('m_note').value=n.note||'';
+  document.getElementById('ngoModal').classList.add('open');
+}
+function closeModal(){ document.getElementById('ngoModal').classList.remove('open'); }
+function saveNGO(){
+  const nm = document.getElementById('m_name').value.trim();
+  if(!nm){ alert('Please enter the NGO name.'); return; }
+  const entry = {
+    name: nm,
+    region: document.getElementById('m_region').value,
+    ico: document.getElementById('m_ico').value,
+    icoC: '',
+    area: document.getElementById('m_area').value.trim(),
+    services: document.getElementById('m_services').value.split(',').map(s=>s.trim()).filter(Boolean),
+    animals: document.getElementById('m_animals').value.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean),
+    phone: document.getElementById('m_phone').value.split(',').map(s=>s.trim()).filter(Boolean),
+    email: document.getElementById('m_email').value.trim(),
+    website: document.getElementById('m_website').value.trim(),
+    hours: document.getElementById('m_hours').value.trim(),
+    emg: document.getElementById('m_emg').checked,
+    note: document.getElementById('m_note').value.trim(),
+  };
+  const idx = parseInt(document.getElementById('editIndex').value);
+  if(idx>=0) ngos[idx]=entry;
+  else ngos.push(entry);
+  saveNGOs();
+  closeModal();
+  buildAdminTable();
+  renderDir();
+}
+function exportCSV(){
+  const cols=['Name','Region','Area','Phone','Email','Website','Hours','24x7','Services','Note'];
+  const rows=ngos.map(n=>[n.name,n.region,n.area,(n.phone||[]).join('; '),n.email,n.website,n.hours,n.emg?'Yes':'No',(n.services||[]).join('; '),n.note].map(v=>`"${(v||'').replace(/"/g,'""')}"`).join(','));
+  const csv=[cols.join(','),...rows].join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download='furever_meals_ngo_directory.csv';
+  a.click();
+}
+
+// ─── FORMS ────────────────────────────────────────────────────────────
+function submitReport(){
+  const name=document.getElementById('rep_name').value.trim();
+  const loc=document.getElementById('rep_location').value.trim();
+  if(!name||!loc){ alert('Please fill in your name and the location of the animal.'); return; }
+  document.getElementById('reportSuccess').classList.add('show');
+  ['rep_name','rep_phone','rep_location','rep_maps','rep_details','rep_ngo'].forEach(id=>document.getElementById(id).value='');
+}
+function submitNGO(){
+  const name=document.getElementById('sub_name').value.trim();
+  const region=document.getElementById('sub_region').value;
+  if(!name||!region){ alert('Please fill in the NGO name and region.'); return; }
+  document.getElementById('submitSuccess').classList.add('show');
+  ['sub_name','sub_areas','sub_phone','sub_email','sub_website','sub_services','sub_animals','sub_hours','sub_address','sub_notes','sub_yourname','sub_yourcontact'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('sub_region').value='';
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────
+renderDir();
+</script>
+</body>
+</html>
